@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resource majorVersion="1" minorVersion="9" useXmlUI="false">
+    <image name="facebook.png" type="multi"  />
+    <image name="google.png" type="multi"  />
+    <image name="map-vehicle-icon-uberX.png" type="multi"  />
+    <image name="menu.png" type="multi"  />
+    <theme name="Theme">
+        <val key="@includeNativeBool" value="true" />
+        <val key="@menuImage" value="menu.png" />
+        <val key="AvatarBlock.align" value="1" />
+        <val key="AvatarBlock.bgColor" value="0" />
+        <border key="AvatarBlock.border" type="underline"  millimeters="false" thickness="2.0" color="5396320" />
+        <val key="AvatarBlock.fgColor" value="ffffff" />
+        <font key="AvatarBlock.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
+        <val key="AvatarBlock.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="AvatarBlock.padUnit" value="2,2,2,2" />
+        <val key="AvatarBlock.padding" value="4.0,4.0,4.0,4.0" />
+        <val key="AvatarBlock.transparency" value="255" />
+        <val key="BlackToolbar.bgColor" value="0" />
+        <val key="BlackToolbar.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="BlackToolbar.padUnit" value="2,2,2,2" />
+        <val key="BlackToolbar.padding" value="1.0,1.0,1.0,1.0" />
+        <val key="BlackToolbar.transparency" value="255" />
+        <val key="ConnectWithSocialButton.align" value="1" />
+        <val key="ConnectWithSocialButton.fgColor" value="2775a4" />
+        <font key="ConnectWithSocialButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="ConnectWithSocialButton.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ConnectWithSocialButton.padUnit" value="2,2,2,2" />
+        <val key="ConnectWithSocialButton.padding" value="4.0,4.0,4.0,4.0" />
+        <val key="ConnectWithSocialButton.press#derive" value="ConnectWithSocialButton" />
+        <val key="ConnectWithSocialButton.sel#derive" value="ConnectWithSocialButton" />
+        <val key="ConnectWithSocialButton.transparency" value="0" />
+        <val key="CountryCodePicker.align" value="1" />
+        <border key="CountryCodePicker.border" type="empty" />
+        <val key="CountryCodePicker.fgColor" value="0" />
+        <font key="CountryCodePicker.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="CountryCodePicker.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="CountryCodePicker.padUnit" value="2,2,2,2" />
+        <val key="CountryCodePicker.padding" value="3.0,4.0,4.0,2.0" />
+        <val key="CountryCodePicker.press#derive" value="CountryCodePicker" />
+        <val key="CountryCodePicker.sel#derive" value="CountryCodePicker" />
+        <val key="CountryCodePicker.transparency" value="0" />
+        <val key="Digit.align" value="4" />
+        <border key="Digit.border" type="underline"  millimeters="false" thickness="2.0" color="0" />
+        <val key="Digit.dis#derive" value="Digit" />
+        <val key="Digit.fgColor" value="0" />
+        <font key="Digit.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.7" />
+        <val key="Digit.marUnit" value="0,2,0,2" />
+        <val key="Digit.margin" value="0.0,0.0,3.0,0.0" />
+        <val key="Digit.padUnit" value="2,2,2,2" />
+        <val key="Digit.padding" value="3.0,1.0,0.0,0.0" />
+        <val key="Digit.press#derive" value="Digit" />
+        <border key="Digit.sel#border" type="underline"  millimeters="false" thickness="4.0" color="0" />
+        <val key="Digit.sel#derive" value="Digit" />
+        <val key="Digit.transparency" value="0" />
+        <val key="ErrorLabel.align" value="1" />
+        <val key="ErrorLabel.bgColor" value="ffffff" />
+        <val key="ErrorLabel.fgColor" value="ff0000" />
+        <font key="ErrorLabel.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="ErrorLabel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ErrorLabel.padUnit" value="2,2,2,2" />
+        <val key="ErrorLabel.padding" value="3.0,3.0,3.0,3.0" />
+        <val key="FlagButton.align" value="1" />
+        <val key="FlagButton.bgColor" value="ffffff" />
+        <val key="FlagButton.fgColor" value="0" />
+        <font key="FlagButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="FlagButton.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="FlagButton.padUnit" value="2,2,2,2" />
+        <val key="FlagButton.padding" value="3.0,3.0,3.0,3.0" />
+        <val key="FlagButton.press#derive" value="FlagButton" />
+        <val key="FlagButton.sel#derive" value="FlagButton" />
+        <val key="FlagsLetter.bgColor" value="f9f9f9" />
+        <val key="FlagsLetter.fgColor" value="525760" />
+        <font key="FlagsLetter.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="FlagsLetter.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="FlagsLetter.padUnit" value="2,2,2,2" />
+        <val key="FlagsLetter.padding" value="3.0,3.0,3.0,3.0" />
+        <val key="FlagsLetter.transparency" value="255" />
+        <val key="FloatingActionButton.bgColor" value="0" />
+        <val key="FloatingActionButton.fgColor" value="ffffff" />
+        <val key="FloatingActionButton.press#bgColor" value="0" />
+        <val key="FloatingActionButton.press#fgColor" value="ffffff" />
+        <val key="FloatingActionButton.sel#bgColor" value="0" />
+        <val key="FloatingActionButton.sel#fgColor" value="ffffff" />
+        <val key="ForgotPassword.align" value="1" />
+        <val key="ForgotPassword.fgColor" value="2775a4" />
+        <font key="ForgotPassword.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="ForgotPassword.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ForgotPassword.padUnit" value="2,2,2,2" />
+        <val key="ForgotPassword.padding" value="0.0,2.5,4.0,4.0" />
+        <val key="ForgotPassword.press#derive" value="ForgotPassword" />
+        <val key="ForgotPassword.sel#derive" value="ForgotPassword" />
+        <val key="ForgotPassword.transparency" value="0" />
+        <val key="Form.bgColor" value="ffffff" />
+        <val key="Form.transparency" value="255" />
+        <val key="GetMovingWithUber.align" value="1" />
+        <val key="GetMovingWithUber.fgColor" value="0" />
+        <font key="GetMovingWithUber.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.8" />
+        <val key="GetMovingWithUber.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="GetMovingWithUber.padUnit" value="2,2,2,2" />
+        <val key="GetMovingWithUber.padding" value="4.0,3.0,4.0,4.0" />
+        <val key="GetMovingWithUber.transparency" value="0" />
+        <val key="History.bgColor" value="ffffff" />
+        <val key="History.derive" value="FloatingActionButton" />
+        <val key="History.fgColor" value="0" />
+        <val key="History.press#bgColor" value="ffffff" />
+        <val key="History.press#derive" value="FloatingActionButton" />
+        <val key="History.press#fgColor" value="0" />
+        <val key="History.sel#bgColor" value="ffffff" />
+        <val key="History.sel#derive" value="FloatingActionButton" />
+        <val key="History.sel#fgColor" value="0" />
+        <val key="History.transparency" value="255" />
+        <val key="HistoryLabel.align" value="4" />
+        <val key="HistoryLabel.bgColor" value="ffffff" />
+        <val key="HistoryLabel.dis#derive" value="HistoryLabel" />
+        <val key="HistoryLabel.fgColor" value="0" />
+        <font key="HistoryLabel.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="2.2" />
+        <val key="HistoryLabel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="HistoryLabel.padUnit" value="2,2,2,2" />
+        <val key="HistoryLabel.padding" value="0.0,0.0,2.0,2.0" />
+        <val key="HistoryLabel.press#derive" value="HistoryLabel" />
+        <val key="HistoryLabel.sel#derive" value="HistoryLabel" />
+        <val key="Label.bgColor" value="ffffff" />
+        <val key="Label.fgColor" value="0" />
+        <font key="Label.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="Label.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="Label.padUnit" value="2,2,2,2" />
+        <val key="Label.padding" value="3.0,3.0,3.0,3.0" />
+        <val key="Label.press#bgColor" value="ffffff" />
+        <val key="Label.press#fgColor" value="0" />
+        <font key="Label.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="Label.press#margin" value="0.0,0.0,0.0,0.0" />
+        <val key="Label.press#padUnit" value="2,2,2,2" />
+        <val key="Label.press#padding" value="3.0,3.0,3.0,3.0" />
+        <val key="Label.sel#bgColor" value="ffffff" />
+        <val key="Label.sel#fgColor" value="0" />
+        <font key="Label.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="Label.sel#margin" value="0.0,0.0,0.0,0.0" />
+        <val key="Label.sel#padUnit" value="2,2,2,2" />
+        <val key="Label.sel#padding" value="3.0,3.0,3.0,3.0" />
+        <val key="Legal.derive" value="Label" />
+        <val key="Legal.dis#derive" value="Legal" />
+        <font key="Legal.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.7" />
+        <val key="Legal.padUnit" value="2,2,2,2" />
+        <val key="Legal.padding" value="4.0,4.0,4.0,4.0" />
+        <val key="Legal.press#derive" value="Legal" />
+        <val key="Legal.sel#derive" value="Legal" />
+        <val key="LogoBackground.bgImage" value="tile.png" />
+        <val key="LogoBackground.bgType" value="2" />
+        <val key="LogoBackground.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="LogoBackground.transparency" value="255" />
+        <border key="PhoneNumber.border" type="empty" />
+        <val key="PhoneNumber.fgColor" value="0" />
+        <font key="PhoneNumber.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
+        <val key="PhoneNumber.padUnit" value="2,2,2,2" />
+        <val key="PhoneNumber.padding" value="3.0,4.0,0.0,4.0" />
+        <val key="PhoneNumber.press#derive" value="PhoneNumber" />
+        <val key="PhoneNumber.sel#derive" value="PhoneNumber" />
+        <val key="PhoneNumber.transparency" value="0" />
+        <border key="PhoneNumberHint.border" type="empty" />
+        <val key="PhoneNumberHint.fgColor" value="a4a4ac" />
+        <font key="PhoneNumberHint.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.7" />
+        <val key="PhoneNumberHint.padUnit" value="2,0,2,2" />
+        <val key="PhoneNumberHint.padding" value="3.0,4.0,0.0,4.0" />
+        <val key="PhoneNumberHint.press#derive" value="PhoneNumberHint" />
+        <val key="PhoneNumberHint.sel#derive" value="PhoneNumberHint" />
+        <val key="PhoneNumberHint.transparency" value="0" />
+        <font key="ResendCode.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.7" />
+        <val key="ResendCode.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ResendCode.padUnit" value="0,2,2,0" />
+        <val key="ResendCode.padding" value="0.0,6.0,3.0,0.0" />
+        <border key="Separator.border" type="underline"  millimeters="false" thickness="2.0" color="15592941" />
+        <val key="Separator.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="Separator.padding" value="0.0,0.0,0.0,0.0" />
+        <val key="Separator.transparency" value="0" />
+        <val key="SideCommand.align" value="1" />
+        <val key="SideCommand.fgColor" value="0" />
+        <font key="SideCommand.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="SideCommand.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SideCommand.padUnit" value="2,2,2,2" />
+        <val key="SideCommand.padding" value="3.0,3.0,4.0,4.0" />
+        <val key="SideCommand.press#align" value="1" />
+        <val key="SideCommand.press#fgColor" value="0" />
+        <font key="SideCommand.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
+        <val key="SideCommand.press#margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SideCommand.press#padUnit" value="2,2,2,2" />
+        <val key="SideCommand.press#padding" value="3.0,3.0,4.0,4.0" />
+        <val key="SideCommand.press#transparency" value="0" />
+        <val key="SideCommand.sel#align" value="1" />
+        <val key="SideCommand.sel#fgColor" value="0" />
+        <font key="SideCommand.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
+        <val key="SideCommand.sel#margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SideCommand.sel#padUnit" value="2,2,2,2" />
+        <val key="SideCommand.sel#padding" value="3.0,3.0,4.0,4.0" />
+        <val key="SideCommand.sel#transparency" value="0" />
+        <val key="SideCommand.transparency" value="0" />
+        <val key="SideNavigationPanel.bgColor" value="ffffff" />
+        <border key="SideNavigationPanel.border" type="underline"  millimeters="false" thickness="2.0" color="14737632" />
+        <val key="SideNavigationPanel.dis#derive" value="SideNavigationPanel" />
+        <val key="SideNavigationPanel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SideNavigationPanel.padding" value="0.0,2.0,0.0,0.0" />
+        <val key="SideNavigationPanel.press#derive" value="SideNavigationPanel" />
+        <val key="SideNavigationPanel.sel#derive" value="SideNavigationPanel" />
+        <val key="SideNavigationPanel.transparency" value="255" />
+        <val key="SquareLogo.bgColor" value="ffffff" />
+        <val key="SquareLogo.fgColor" value="0" />
+        <font key="SquareLogo.font" type="ttf" face="0" style="0" size="0" name="native:MainBold" family="native:MainBold" sizeSettings="3" actualSize="5.0" />
+        <val key="SquareLogo.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SquareLogo.padUnit" value="2,2,2,2" />
+        <val key="SquareLogo.padding" value="2.0,2.0,2.0,2.0" />
+        <val key="SquareLogo.transparency" value="255" />
+        <val key="TextField.align" value="1" />
+        <border key="TextField.border" type="underline"  millimeters="false" thickness="2.0" color="0" />
+        <val key="TextField.fgColor" value="0" />
+        <font key="TextField.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="TextField.marUnit" value="0,2,0,2" />
+        <val key="TextField.margin" value="0.0,0.0,3.0,3.0" />
+        <val key="TextField.padUnit" value="2,2,2,2" />
+        <val key="TextField.padding" value="3.0,1.0,0.0,0.0" />
+        <val key="TextField.sel#align" value="1" />
+        <border key="TextField.sel#border" type="underline"  millimeters="false" thickness="4.0" color="0" />
+        <val key="TextField.sel#fgColor" value="0" />
+        <val key="TextField.sel#marUnit" value="0,2,0,2" />
+        <val key="TextField.sel#margin" value="0.0,0.0,3.0,3.0" />
+        <val key="TextField.sel#padUnit" value="2,2,2,2" />
+        <val key="TextField.sel#padding" value="3.0,3.0,0.0,0.0" />
+        <val key="TextField.sel#transparency" value="0" />
+        <val key="TextField.transparency" value="0" />
+        <val key="TextHint.align" value="1" />
+        <val key="TextHint.fgColor" value="a4a4ac" />
+        <font key="TextHint.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="2.8" />
+        <val key="TextHint.marUnit" value="0,2,0,2" />
+        <val key="TextHint.margin" value="0.0,0.0,3.0,3.0" />
+        <val key="TextHint.padUnit" value="2,0,2,0" />
+        <val key="TextHint.padding" value="3.0,1.0,0.0,0.0" />
+        <val key="TextHint.transparency" value="0" />
+        <border key="Title.border" type="empty" />
+        <border key="TitleArea.border" type="empty" />
+        <val key="TitleArea.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="TitleArea.padding" value="0.0,0.0,0.0,0.0" />
+        <val key="TitleCommand.fgColor" value="0" />
+        <font key="TitleCommand.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
+        <val key="TitleCommand.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="TitleCommand.padUnit" value="2,2,2,2" />
+        <val key="TitleCommand.padding" value="3.0,1.0,4.0,4.0" />
+        <val key="TitleCommand.press#derive" value="TitleCommand" />
+        <val key="TitleCommand.sel#derive" value="TitleCommand" />
+        <val key="TitleCommand.transparency" value="0" />
+        <border key="Toolbar.border" type="empty" />
+        <val key="UberForBusinessBackground.bgColor" value="0" />
+        <val key="UberForBusinessBackground.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="UberForBusinessBackground.padUnit" value="2,2,2,2" />
+        <val key="UberForBusinessBackground.padding" value="3.0,3.0,4.0,4.0" />
+        <val key="UberForBusinessBackground.press#derive" value="UberForBusinessBackground" />
+        <val key="UberForBusinessBackground.sel#derive" value="UberForBusinessBackground" />
+        <val key="UberForBusinessBackground.transparency" value="255" />
+        <val key="UberForBusinessLine1.align" value="1" />
+        <val key="UberForBusinessLine1.dis#derive" value="UberForBusinessLine1" />
+        <val key="UberForBusinessLine1.fgColor" value="ffffff" />
+        <font key="UberForBusinessLine1.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="UberForBusinessLine1.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="UberForBusinessLine1.padUnit" value="2,2,2,2" />
+        <val key="UberForBusinessLine1.padding" value="0.0,1.0,0.0,0.0" />
+        <val key="UberForBusinessLine1.press#derive" value="UberForBusinessLine1" />
+        <val key="UberForBusinessLine1.sel#derive" value="UberForBusinessLine1" />
+        <val key="UberForBusinessLine1.transparency" value="0" />
+        <val key="UberForBusinessLine2.align" value="1" />
+        <val key="UberForBusinessLine2.dis#derive" value="UberForBusinessLine2" />
+        <val key="UberForBusinessLine2.fgColor" value="88888e" />
+        <font key="UberForBusinessLine2.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.7" />
+        <val key="UberForBusinessLine2.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="UberForBusinessLine2.padUnit" value="2,2,2,2" />
+        <val key="UberForBusinessLine2.padding" value="0.0,1.0,0.0,0.0" />
+        <val key="UberForBusinessLine2.press#derive" value="UberForBusinessLine2" />
+        <val key="UberForBusinessLine2.sel#derive" value="UberForBusinessLine2" />
+        <val key="UberForBusinessLine2.transparency" value="0" />
+        <val key="VersionNumber.dis#derive" value="VersionNumber" />
+        <val key="VersionNumber.fgColor" value="a4a4ac" />
+        <font key="VersionNumber.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.8" />
+        <val key="VersionNumber.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="VersionNumber.padUnit" value="2,2,2,2" />
+        <val key="VersionNumber.padding" value="3.0,3.0,3.0,3.0" />
+        <val key="VersionNumber.press#derive" value="VersionNumber" />
+        <val key="VersionNumber.sel#derive" value="VersionNumber" />
+        <val key="VersionNumber.transparency" value="0" />
+        <val key="WhereTo.align" value="1" />
+        <val key="WhereTo.bgColor" value="ffffff" />
+        <border key="WhereTo.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="2.0" shadowOpacity="30" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.5" bezierCorners="false" />
+        <val key="WhereTo.fgColor" value="535861" />
+        <font key="WhereTo.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.5" />
+        <val key="WhereTo.marUnit" value="2,2,2,2" />
+        <val key="WhereTo.margin" value="12.0,0.0,2.0,2.0" />
+        <val key="WhereTo.padUnit" value="2,2,2,2" />
+        <val key="WhereTo.padding" value="4.0,4.0,5.0,5.0" />
+        <val key="WhereTo.press#derive" value="WhereTo" />
+        <val key="WhereTo.sel#derive" value="WhereTo" />
+        <val key="WhereTo.transparency" value="255" />
+        <val key="WhiteOnBlackTitle.fgColor" value="ffffff" />
+        <font key="WhiteOnBlackTitle.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
+        <val key="WhiteOnBlackTitle.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="WhiteOnBlackTitle.padUnit" value="2,2,2,2" />
+        <val key="WhiteOnBlackTitle.padding" value="1.0,3.0,3.0,3.0" />
+        <val key="WhiteOnBlackTitle.transparency" value="0" />
+        <val key="WhiteOnBlackTitleLeftMargin.derive" value="WhiteOnBlackTitle" />
+        <font key="WhiteOnBlackTitleLeftMargin.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="WhiteOnBlackTitleLeftMargin.marUnit" value="0,2,0,0" />
+        <val key="WhiteOnBlackTitleLeftMargin.margin" value="0.0,0.0,8.0,0.0" />
+        <val key="WhiteOnBlackTitleLeftMargin.padUnit" value="2,2,2,2" />
+        <val key="WhiteOnBlackTitleLeftMargin.padding" value="1.0,3.0,3.0,3.0" />
+    </theme>
+    <image name="tile.png"  />
+    <image name="uber-logo.png"  />
+</resource>
