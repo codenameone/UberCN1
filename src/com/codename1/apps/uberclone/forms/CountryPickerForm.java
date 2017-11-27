@@ -47,7 +47,6 @@ public class CountryPickerForm extends Form {
     public CountryPickerForm(Button sourceButton, Resources flags) {
         super(BoxLayout.y());
         getContentPane().setScrollVisible(false);
-        setUIID("LoginForm");
         Button back = new Button("", "TitleCommand");
         back.addActionListener(e -> sourceButton.getComponentForm().showBack());
         Button search = new Button("", "TitleCommand");

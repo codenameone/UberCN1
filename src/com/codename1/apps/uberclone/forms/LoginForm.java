@@ -31,6 +31,7 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
@@ -60,9 +61,21 @@ public class LoginForm extends Form {
                 return size;
             }
         };
+                
+        Label placeholder = new Label();
         
         // it should be placed in the center
-        Container logo = BorderLayout.centerAbsolute(squareLogo);
+        Container logo = LayeredLayout.encloseIn(
+                placeholder,
+                BorderLayout.centerAbsolute(squareLogo)
+        );
+        
+        callSeriallyOnIdle(() -> {
+            Image shadow = squareShadow(squareLogo.getPreferredW(), squareLogo.getPreferredH(), convertToPixels(14), 0.35f);
+            logo.replace(placeholder, BorderLayout.centerAbsolute(new Label(shadow, "Container")), null);
+            revalidate();
+        });
+        
         logo.setUIID("LogoBackground");
         
         add(CENTER, logo);
@@ -102,5 +115,26 @@ public class LoginForm extends Form {
 
     @Override
     protected void initGlobalToolbar() {
+    }
+
+    /**
+     * Generates a square shadow and returns it
+     * 
+     * @param width the width of the shadow image
+     * @param height the height of the shadow image
+     * @param blurRadius a shadow is blurred using a gaussian blur when available, a value of 10 is often satisfactory
+     * @param opacity the opacity of the shadow between 0 - 1 where 1 is completely opaque
+     * @return an image containing the shadow for source
+     */
+    public static Image squareShadow(int width, int height, int blurRadius, float opacity) {
+        Image img = Image.createImage(width + blurRadius * 2, height + blurRadius * 2, 0 );
+        Graphics g = img.getGraphics();
+        g.setAlpha((int)(opacity * 255.0));
+        g.setColor(0);
+        g.fillRect(blurRadius, blurRadius, width, height);
+        if(Display.getInstance().isGaussianBlurSupported()) {
+            img = Display.getInstance().gaussianBlurImage(img, blurRadius);
+        }
+        return img;                
     }
 }

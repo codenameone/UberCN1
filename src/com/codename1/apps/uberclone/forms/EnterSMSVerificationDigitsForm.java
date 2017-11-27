@@ -84,10 +84,14 @@ public class EnterSMSVerificationDigitsForm extends Form {
         fab.addActionListener(e -> {
             if(!isValid(digit1.getAsInt(0), digit2.getAsInt(0), digit3.getAsInt(0), digit4.getAsInt(0))) {
                 error.setVisible(true);
-                digit1.getAllStyles().setBorder(Border.createUnderlineBorder(3, 0xff0000));
-                digit2.getAllStyles().setBorder(Border.createUnderlineBorder(3, 0xff0000));
-                digit3.getAllStyles().setBorder(Border.createUnderlineBorder(3, 0xff0000));
-                digit4.getAllStyles().setBorder(Border.createUnderlineBorder(3, 0xff0000));
+                digit1.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
+                digit2.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
+                digit3.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
+                digit4.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
+                digit1.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
+                digit2.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
+                digit3.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
+                digit4.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
                 repaint();
                 return;
             }

@@ -25,6 +25,7 @@ package com.codename1.apps.uberclone.forms;
 
 import com.codename1.components.FloatingActionButton;
 import static com.codename1.ui.CN.*;
+import com.codename1.ui.Component;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
@@ -33,6 +34,7 @@ import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.plaf.Style;
 
 /**
  * Form representing mobile number entry
@@ -50,9 +52,15 @@ public class EnterMobileNumberForm extends Form {
         CountryCodePicker countryCodeButton = new CountryCodePicker();
         TextField phoneNumber = new TextField("", "050-123-4567", 40, TextField.PHONENUMBER);
         add(BorderLayout.centerEastWest(
-                FlowLayout.encloseMiddle(phoneNumber), 
+                phoneNumber, 
                 null, 
                 countryCodeButton));
+        Style ps = phoneNumber.getUnselectedStyle();
+        Style cs = countryCodeButton.getUnselectedStyle();
+        int pl = cs.getPaddingLeft(isRTL());
+        int pr = cs.getPaddingRight(isRTL());
+        countryCodeButton.getAllStyles().setPaddingUnit(Style.UNIT_TYPE_PIXELS);
+        countryCodeButton.getAllStyles().setPadding(ps.getPaddingTop(), ps.getPaddingBottom(), pl, pr);
         setEditOnShow(phoneNumber);
         FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ARROW_FORWARD);
         fab.bindFabToContainer(this);
