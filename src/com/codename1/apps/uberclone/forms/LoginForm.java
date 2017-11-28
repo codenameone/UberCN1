@@ -33,10 +33,15 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
+import com.codename1.ui.Painter;
+import com.codename1.ui.Stroke;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
+import com.codename1.ui.animations.Animation;
 import com.codename1.ui.events.FocusListener;
 import com.codename1.ui.geom.Dimension;
+import com.codename1.ui.geom.GeneralPath;
+import com.codename1.ui.geom.Rectangle;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -70,13 +75,16 @@ public class LoginForm extends Form {
                 BorderLayout.centerAbsolute(squareLogo)
         );
         
-        callSeriallyOnIdle(() -> {
-            Image shadow = squareShadow(squareLogo.getPreferredW(), squareLogo.getPreferredH(), convertToPixels(14), 0.35f);
-            logo.replace(placeholder, BorderLayout.centerAbsolute(new Label(shadow, "Container")), null);
-            revalidate();
-        });
+        startThread(() -> {
+            final Image shadow = squareShadow(squareLogo.getPreferredW(), squareLogo.getPreferredH(), convertToPixels(14), 0.35f);
+            callSerially(() -> {
+                logo.replace(placeholder, BorderLayout.centerAbsolute(new Label(shadow, "Container")), null);
+                revalidate();
+            });
+        }, "Shadow Maker").start();
         
         logo.setUIID("LogoBackground");
+        logo.getUnselectedStyle().setBgPainter(new LoginFormPainter(logo));
         
         add(CENTER, logo);
         
@@ -136,5 +144,83 @@ public class LoginForm extends Form {
             img = Display.getInstance().gaussianBlurImage(img, blurRadius);
         }
         return img;                
+    }
+    
+    class LoginFormPainter implements Painter, Animation {
+        private double angle;
+        private final GeneralPath gp = new GeneralPath();
+        private final Component parentCmp;
+        private int counter;
+        
+        public LoginFormPainter(Component parentCmp) {
+            this.parentCmp = parentCmp;
+            int x;
+            int y;
+            int w = Display.getInstance().convertToPixels(10);
+            int h = w;
+            int x0 = getX() - getWidth();
+            int xn = getX() + 2 * getWidth();
+            int y0 = getY() - getHeight();
+            int yn = getY() + 2 * getHeight();
+            for (int offset : new int[]{0, w/2}) {
+                x = x0 +offset;
+                y = y0 + offset;
+                while (x < xn) {
+                    while (y < yn) {
+                        drawShape(gp, x, y, w, h);
+                        y += h;
+                    }
+                    x += w;
+                    y = y0 + offset;
+                }
+            }            
+            registerAnimated(this);
+        }
+
+        private void drawShape(GeneralPath gp, float x, float y, float w, float h) {
+            float e = w/6;
+            float ex1 = x + (w-e)/2;
+            float ex2 = x + (w+e)/2;
+            float ey1 = y + (h-e)/2;
+            float ey2 = y + (h+e)/2;
+            gp.moveTo(ex1, y);
+            gp.lineTo(ex2, y);
+            gp.quadTo(x+w, y, x+w, ey1);
+            gp.lineTo(x+w, ey2);
+            gp.quadTo(x+w, y+h, ex2, y+h);
+            gp.lineTo(ex1, y+h);
+            gp.quadTo(x, y+h, x, ey2);
+            gp.lineTo(x, ey1);
+            gp.quadTo(x, y, ex1, y);            
+        }        
+        
+        @Override
+        public void paint(Graphics g, Rectangle rect) {
+            g.setAlpha(255);
+            g.setColor(0x128f96);
+            g.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+            g.setColor(0xffffff);
+            g.setAlpha(72);
+            g.setAntiAliased(true);
+            g.rotate((float)(Math.PI/4f + Math.toRadians(angle % 360)), getX() + getWidth()/2, getY() + getHeight()/2);
+            g.drawShape(gp, new Stroke(1.5f, Stroke.CAP_SQUARE, Stroke.JOIN_BEVEL, 1f));
+            g.resetAffine();
+            g.setAlpha(255);
+        }
+
+        @Override
+        public boolean animate() {
+            counter++;
+            if(counter % 2 == 0) {
+                angle += 0.1;
+                parentCmp.repaint();
+            }
+            return false;
+        }
+
+        @Override
+        public void paint(Graphics g) {
+        }
+        
     }
 }

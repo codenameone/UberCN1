@@ -28,12 +28,17 @@ import com.codename1.ui.Button;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Container;
 import com.codename1.ui.FontImage;
+import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.animations.CommonTransitions;
 import com.codename1.ui.layouts.BorderLayout;
+import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
+import com.codename1.util.LazyValue;
+import com.codename1.util.SuccessCallback;
 
 /**
  * Common code for construction and initialization of various classes e.g. the side menu logic etc.
@@ -81,7 +86,7 @@ public class CommonCode {
         tb.addCommandToSideMenu("Your Trips", null, e -> {});
         tb.addCommandToSideMenu("Help", null, e -> {});
         tb.addCommandToSideMenu("Free Rides", null, e -> {});
-        tb.addCommandToSideMenu("Settings", null, e -> {});
+        tb.addCommandToSideMenu("Settings", null, e -> new SettingsForm().show());
         
         Button legalButton = new Button("Legal", "Legal");
         Container legal = BorderLayout.centerCenterEastWest(null, new Label("v4.178.1001", "VersionNumber"), legalButton);
@@ -89,4 +94,45 @@ public class CommonCode {
         legal.setUIID("SideNavigationPanel");
         tb.setComponentToSideMenuSouth(legal);
     } 
+    
+    
+    /**
+     * Initializes a form with a black background title animation style
+     * @param f the form
+     */
+    public static void initBlackTitleForm(Form f, String title, SuccessCallback<String> searchResults) {
+        Form backTo = getCurrentForm();
+        f.getContentPane().setScrollVisible(false);
+        Button back = new Button("", "TitleCommand");
+        back.addActionListener(e -> backTo.showBack());
+        back.getAllStyles().setFgColor(0xffffff);
+        FontImage.setMaterialIcon(back, FontImage.MATERIAL_ARROW_BACK);
+                
+        Container searchBack = null;
+        if(searchResults != null) {
+            Button search = new Button("", "TitleCommand");
+            search.getAllStyles().setFgColor(0xffffff);
+            FontImage.setMaterialIcon(search, FontImage.MATERIAL_SEARCH);
+            search.addActionListener(e -> {
+                
+            });
+            searchBack = BorderLayout.north(
+                BorderLayout.centerEastWest(null, search, back));
+        } else {
+            searchBack = BorderLayout.north(
+                BorderLayout.centerEastWest(null, null, back));
+        }
+        
+        f.setTransitionInAnimator(CommonTransitions.createCover(CommonTransitions.SLIDE_VERTICAL, false, 300));
+        f.setTransitionOutAnimator(CommonTransitions.createCover(CommonTransitions.SLIDE_VERTICAL, true, 300));
+        
+        Label titleLabel = new Label(title, "WhiteOnBlackTitle");
+
+        titleLabel.getAllStyles().setMarginTop(back.getPreferredH());
+        titleLabel.getAllStyles().setMarginUnit(Style.UNIT_TYPE_PIXELS, Style.UNIT_TYPE_DIPS, Style.UNIT_TYPE_DIPS, Style.UNIT_TYPE_DIPS);
+        
+        f.getToolbar().setTitleComponent(LayeredLayout.encloseIn(searchBack, titleLabel));
+        
+        f.getAnimationManager().onTitleScrollAnimation(titleLabel.createStyleAnimation("WhiteOnBlackTitleLeftMargin", 200));
+    }
 }

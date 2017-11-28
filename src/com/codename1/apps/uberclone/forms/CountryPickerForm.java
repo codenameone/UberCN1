@@ -46,25 +46,7 @@ import com.codename1.ui.util.Resources;
 public class CountryPickerForm extends Form {
     public CountryPickerForm(Button sourceButton, Resources flags) {
         super(BoxLayout.y());
-        getContentPane().setScrollVisible(false);
-        Button back = new Button("", "TitleCommand");
-        back.addActionListener(e -> sourceButton.getComponentForm().showBack());
-        Button search = new Button("", "TitleCommand");
-        back.getAllStyles().setFgColor(0xffffff);
-        search.getAllStyles().setFgColor(0xffffff);
-        FontImage.setMaterialIcon(back, FontImage.MATERIAL_ARROW_BACK);
-        FontImage.setMaterialIcon(search, FontImage.MATERIAL_SEARCH);
-        
-        Container searchBack = BorderLayout.north(
-                BorderLayout.centerEastWest(null, search, back));
-        Label title = new Label("Select a Country", "WhiteOnBlackTitle");
-
-        title.getAllStyles().setMarginTop(back.getPreferredH());
-        title.getAllStyles().setMarginUnit(Style.UNIT_TYPE_PIXELS, Style.UNIT_TYPE_DIPS, Style.UNIT_TYPE_DIPS, Style.UNIT_TYPE_DIPS);
-        
-        getToolbar().setTitleComponent(LayeredLayout.encloseIn(searchBack, title));
-        
-        getAnimationManager().onTitleScrollAnimation(title.createStyleAnimation("WhiteOnBlackTitleLeftMargin", 200));
+        CommonCode.initBlackTitleForm(this, "Select a Country", val -> search(val));
         
         Image blankIcon = Image.createImage(100, 70, 0);
         char lastChar = (char)-1;
