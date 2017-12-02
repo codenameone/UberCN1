@@ -51,23 +51,9 @@ public class EnterSMSVerificationDigitsForm extends Form {
         box.setScrollableY(true);
         
         box.add(new SpanLabel("Enter the 4-digit code sent to you at " + phone, "FlagButton"));
-        TextField digit1 = new TextField("", "0", 1, TextField.NUMERIC);
-        TextField digit2 = new TextField("", "0", 1, TextField.NUMERIC);
-        TextField digit3 = new TextField("", "0", 1, TextField.NUMERIC);
-        TextField digit4 = new TextField("", "0", 1, TextField.NUMERIC);
-        digit1.setUIID("Digit");
-        digit2.setUIID("Digit");
-        digit3.setUIID("Digit");
-        digit4.setUIID("Digit");
-        digit1.getHintLabel().getAllStyles().setAlignment(CENTER);
-        digit2.getHintLabel().getAllStyles().setAlignment(CENTER);
-        digit3.getHintLabel().getAllStyles().setAlignment(CENTER);
-        digit4.getHintLabel().getAllStyles().setAlignment(CENTER);
-        setEditOnShow(digit1);
-        box.add(BoxLayout.encloseX(digit1, digit2, digit3, digit4));
-        onTypeNext(digit1, digit2);
-        onTypeNext(digit2, digit3);
-        onTypeNext(digit3, digit4);
+        TextField[] digits = createDigits(4);
+        setEditOnShow(digits[0]);
+        box.add(BoxLayout.encloseX(digits));
 
         SpanLabel error = new SpanLabel("The SMS passcode you've entered is incorrect", "ErrorLabel");
         error.setVisible(false);
@@ -82,26 +68,50 @@ public class EnterSMSVerificationDigitsForm extends Form {
         fab.bindFabToContainer(this);
         
         fab.addActionListener(e -> {
-            if(!isValid(digit1.getAsInt(0), digit2.getAsInt(0), digit3.getAsInt(0), digit4.getAsInt(0))) {
+            if(!isValid(toString(digits))) {
                 error.setVisible(true);
-                digit1.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
-                digit2.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
-                digit3.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
-                digit4.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
-                digit1.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
-                digit2.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
-                digit3.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
-                digit4.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
+                errorFields(digits);
                 repaint();
                 return;
             }
             new EnterPasswordForm().show();
         });
     }
+
+    private TextField[] createDigits(int count) {
+        TextField[] response = new TextField[count];
+        for(int iter = 0 ; iter < count ; iter++) {
+            TextField t = new TextField("", "0", 1, TextField.NUMERIC);
+            t.setUIID("Digit");
+            t.getHintLabel().getAllStyles().setAlignment(CENTER);
+            response[iter] = t;
+        }
+
+        for(int iter = 0 ; iter < count - 1 ; iter++) {
+            onTypeNext(response[iter], response[iter + 1]);
+        }
+        
+        return response;
+    }
     
-    public boolean isValid(int digit1, int digit2, int digit3, int digit4) {
+    private void errorFields(TextField... fields) {
+        for(TextField f : fields) {
+            f.getAllStyles().setBorder(Border.createUnderlineBorder(2, 0xcc0000));
+            f.getSelectedStyle().setBorder(Border.createUnderlineBorder(4, 0xcc0000));
+        }
+    }
+
+    private String toString(TextField[] digits) {
+        StringBuilder s = new StringBuilder();
+        for(TextField t : digits) {
+            s.append(t.getAsInt(0));
+        }
+        return s.toString();
+    }
+    
+    public boolean isValid(String s) {
         // just for now
-        return digit1 == 0;
+        return s.startsWith("0");
     }
     
     private void onTypeNext(TextField current, TextField next) {

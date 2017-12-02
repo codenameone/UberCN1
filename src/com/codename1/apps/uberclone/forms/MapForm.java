@@ -85,6 +85,7 @@ public class MapForm extends Form {
         Coord telAviv = new Coord(32.072449, 34.778613);
         mc.zoom(telAviv, mc.getMaxZoom() + 1);
         Label car = new Label(Resources.getGlobalResources().getImage("map-vehicle-icon-uberX.png"));
+        car.getAllStyles().setOpacity(140);
         mapLayer.add(telAviv, car);
         add(mapLayer);
         

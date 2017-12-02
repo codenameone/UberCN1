@@ -123,9 +123,6 @@ public class CommonCode {
                 BorderLayout.centerEastWest(null, null, back));
         }
         
-        f.setTransitionInAnimator(CommonTransitions.createCover(CommonTransitions.SLIDE_VERTICAL, false, 300));
-        f.setTransitionOutAnimator(CommonTransitions.createCover(CommonTransitions.SLIDE_VERTICAL, true, 300));
-        
         Label titleLabel = new Label(title, "WhiteOnBlackTitle");
 
         titleLabel.getAllStyles().setMarginTop(back.getPreferredH());
@@ -134,5 +131,8 @@ public class CommonCode {
         f.getToolbar().setTitleComponent(LayeredLayout.encloseIn(searchBack, titleLabel));
         
         f.getAnimationManager().onTitleScrollAnimation(titleLabel.createStyleAnimation("WhiteOnBlackTitleLeftMargin", 200));
+        
+        f.setTransitionInAnimator(CommonTransitions.createCover(CommonTransitions.SLIDE_VERTICAL, false, 300));
+        f.setTransitionOutAnimator(CommonTransitions.createCover(CommonTransitions.SLIDE_VERTICAL, true, 300));        
     }
 }

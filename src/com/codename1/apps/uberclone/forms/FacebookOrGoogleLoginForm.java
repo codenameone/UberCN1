@@ -43,8 +43,6 @@ public class FacebookOrGoogleLoginForm extends Form {
         add(new Label("Choose an account", "FlagButton"));
         Button facebook = new Button("Facebook", Resources.getGlobalResources().getImage("facebook.png"), "FlagButton");
         Button google = new Button("Google", Resources.getGlobalResources().getImage("google.png"), "FlagButton");
-        google.setGap(convertToPixels(2));
-        facebook.setGap(convertToPixels(2));
         add(facebook).add(google);
     }
 }

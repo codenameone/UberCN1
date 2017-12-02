@@ -230,7 +230,6 @@
         <val key="SideNavigationPanel.transparency" value="255" />
         <val key="SquareLogo.bgColor" value="ffffff" />
         <val key="SquareLogo.fgColor" value="0" />
-        <font key="SquareLogo.font" type="ttf" face="0" style="0" size="0" name="native:MainBold" family="native:MainBold" sizeSettings="3" actualSize="5.0" />
         <val key="SquareLogo.margin" value="0.0,0.0,0.0,0.0" />
         <val key="SquareLogo.padUnit" value="2,2,2,2" />
         <val key="SquareLogo.padding" value="2.0,2.0,2.0,2.0" />
@@ -272,7 +271,9 @@
         <val key="TitleCommand.press#derive" value="TitleCommand" />
         <val key="TitleCommand.sel#derive" value="TitleCommand" />
         <val key="TitleCommand.transparency" value="0" />
+        <val key="Toolbar.bgColor" value="ffffff" />
         <border key="Toolbar.border" type="empty" />
+        <val key="Toolbar.transparency" value="255" />
         <val key="UberForBusinessBackground.bgColor" value="0" />
         <val key="UberForBusinessBackground.margin" value="0.0,0.0,0.0,0.0" />
         <val key="UberForBusinessBackground.padUnit" value="2,2,2,2" />
@@ -316,7 +317,7 @@
         <val key="WhereSeparator.transparency" value="255" />
         <val key="WhereTo.align" value="1" />
         <val key="WhereTo.bgColor" value="ffffff" />
-        <border key="WhereTo.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="2.0" shadowOpacity="30" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.5" bezierCorners="false" />
+        <border key="WhereTo.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="2.0" shadowOpacity="30" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.0" bezierCorners="false" />
         <val key="WhereTo.fgColor" value="535861" />
         <font key="WhereTo.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.2" />
         <val key="WhereTo.marUnit" value="2,2,2,2" />
@@ -326,15 +327,12 @@
         <val key="WhereTo.press#derive" value="WhereTo" />
         <val key="WhereTo.sel#derive" value="WhereTo" />
         <val key="WhereTo.transparency" value="255" />
+        <val key="WhereToButtonIcon.derive" value="WhereToButtonLine1" />
         <val key="WhereToButtonIcon.dis#derive" value="WhereToButtonIcon" />
-        <val key="WhereToButtonIcon.fgColor" value="000000" />
-        <font key="WhereToButtonIcon.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
-        <val key="WhereToButtonIcon.margin" value="0.0,0.0,0.0,0.0" />
         <val key="WhereToButtonIcon.padUnit" value="2,2,2,2" />
         <val key="WhereToButtonIcon.padding" value="4.0,4.0,2.0,2.0" />
         <val key="WhereToButtonIcon.press#derive" value="WhereToButtonIcon" />
         <val key="WhereToButtonIcon.sel#derive" value="WhereToButtonIcon" />
-        <val key="WhereToButtonIcon.transparency" value="0" />
         <border key="WhereToButtonLine1.border" type="underline"  millimeters="false" thickness="2.0" color="15592941" />
         <val key="WhereToButtonLine1.dis#derive" value="WhereToButtonLine1" />
         <val key="WhereToButtonLine1.fgColor" value="000000" />
@@ -346,15 +344,10 @@
         <val key="WhereToButtonLine1.sel#derive" value="WhereToButtonLine1" />
         <val key="WhereToButtonLine1.transparency" value="0" />
         <border key="WhereToButtonLineNoBorder.border" type="empty" />
+        <val key="WhereToButtonLineNoBorder.derive" value="WhereToButtonLine1" />
         <val key="WhereToButtonLineNoBorder.dis#derive" value="WhereToButtonLineNoBorder" />
-        <val key="WhereToButtonLineNoBorder.fgColor" value="000000" />
-        <font key="WhereToButtonLineNoBorder.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
-        <val key="WhereToButtonLineNoBorder.margin" value="0.0,0.0,0.0,0.0" />
-        <val key="WhereToButtonLineNoBorder.padUnit" value="2,2,2,2" />
-        <val key="WhereToButtonLineNoBorder.padding" value="4.0,4.0,2.0,4.0" />
         <val key="WhereToButtonLineNoBorder.press#derive" value="WhereToButtonLineNoBorder" />
         <val key="WhereToButtonLineNoBorder.sel#derive" value="WhereToButtonLineNoBorder" />
-        <val key="WhereToButtonLineNoBorder.transparency" value="0" />
         <val key="WhereToToolbar.bgColor" value="ffffff" />
         <val key="WhereToToolbar.margin" value="0.0,0.0,0.0,0.0" />
         <val key="WhereToToolbar.padUnit" value="0,0,2,0" />
