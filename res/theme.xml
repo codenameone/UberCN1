@@ -23,17 +23,11 @@
         <val key="BlackToolbar.padUnit" value="2,2,2,2" />
         <val key="BlackToolbar.padding" value="1.0,1.0,1.0,1.0" />
         <val key="BlackToolbar.transparency" value="255" />
-        <val key="ConnectWithSocialButton.align" value="1" />
+        <val key="ConnectWithSocialButton.derive" value="Label " />
         <val key="ConnectWithSocialButton.fgColor" value="2775a4" />
-        <font key="ConnectWithSocialButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
-        <val key="ConnectWithSocialButton.margin" value="0.0,0.0,0.0,0.0" />
-        <val key="ConnectWithSocialButton.padUnit" value="2,2,2,2" />
-        <val key="ConnectWithSocialButton.padding" value="4.0,4.0,4.0,4.0" />
         <val key="ConnectWithSocialButton.press#derive" value="ConnectWithSocialButton" />
         <val key="ConnectWithSocialButton.sel#derive" value="ConnectWithSocialButton" />
-        <val key="ConnectWithSocialButton.transparency" value="0" />
         <val key="CountryCodePicker.align" value="1" />
-        <border key="CountryCodePicker.border" type="empty" />
         <val key="CountryCodePicker.fgColor" value="0" />
         <font key="CountryCodePicker.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="CountryCodePicker.margin" value="0.0,0.0,0.0,0.0" />
@@ -65,13 +59,8 @@
         <val key="ErrorLabel.padding" value="3.0,3.0,3.0,3.0" />
         <val key="ErrorLabel.press#derive" value="ErrorLabel" />
         <val key="ErrorLabel.sel#derive" value="ErrorLabel" />
-        <val key="FlagButton.align" value="1" />
-        <val key="FlagButton.bgColor" value="ffffff" />
-        <val key="FlagButton.fgColor" value="0" />
+        <val key="FlagButton.derive" value="Label" />
         <font key="FlagButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.2" />
-        <val key="FlagButton.margin" value="0.0,0.0,0.0,0.0" />
-        <val key="FlagButton.padUnit" value="2,2,2,2" />
-        <val key="FlagButton.padding" value="4.0,4.0,4.0,4.0" />
         <val key="FlagButton.press#derive" value="FlagButton" />
         <val key="FlagButton.sel#derive" value="FlagButton" />
         <val key="FlagsLetter.bgColor" value="f9f9f9" />
@@ -119,13 +108,10 @@
         <val key="FromToTextFieldHint.press#derive" value="FromToTextFieldHint" />
         <val key="FromToTextFieldHint.sel#derive" value="FromToTextFieldHint" />
         <val key="FromToTextFieldHint.transparency" value="0" />
-        <val key="GetMovingWithUber.align" value="1" />
-        <val key="GetMovingWithUber.fgColor" value="0" />
+        <val key="GetMovingWithUber.derive" value="Label" />
         <font key="GetMovingWithUber.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.8" />
-        <val key="GetMovingWithUber.margin" value="0.0,0.0,0.0,0.0" />
         <val key="GetMovingWithUber.padUnit" value="2,2,2,2" />
         <val key="GetMovingWithUber.padding" value="4.0,3.0,4.0,4.0" />
-        <val key="GetMovingWithUber.transparency" value="0" />
         <val key="History.bgColor" value="ffffff" />
         <val key="History.derive" value="FloatingActionButton" />
         <val key="History.fgColor" value="0" />
@@ -183,7 +169,6 @@
         <val key="PhoneNumber.press#derive" value="PhoneNumber" />
         <val key="PhoneNumber.sel#derive" value="PhoneNumber" />
         <val key="PhoneNumber.transparency" value="0" />
-        <border key="PhoneNumberHint.border" type="empty" />
         <val key="PhoneNumberHint.fgColor" value="a4a4ac" />
         <font key="PhoneNumberHint.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.7" />
         <val key="PhoneNumberHint.padUnit" value="2,0,2,2" />
@@ -197,9 +182,8 @@
         <val key="ResendCode.padding" value="0.0,6.0,3.0,0.0" />
         <border key="Separator.border" type="underline"  millimeters="false" thickness="2.0" color="15592941" />
         <val key="Separator.margin" value="0.0,0.0,0.0,0.0" />
-        <val key="Separator.padding" value="0.0,0.0,0.0,0.0" />
+        <val key="Separator.padding" value="0.0,2.0,0.0,0.0" />
         <val key="Separator.transparency" value="0" />
-        <val key="SideCommand.align" value="1" />
         <val key="SideCommand.fgColor" value="0" />
         <font key="SideCommand.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="SideCommand.margin" value="0.0,0.0,0.0,0.0" />
