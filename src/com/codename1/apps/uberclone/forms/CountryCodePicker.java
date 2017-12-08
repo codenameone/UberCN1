@@ -31,7 +31,12 @@ import static com.codename1.sms.activation.ActivationForm.COUNTRY_FLAGS;
 import static com.codename1.sms.activation.ActivationForm.COUNTRY_ISO2;
 import static com.codename1.sms.activation.ActivationForm.COUNTRY_ISO3;
 import com.codename1.ui.Button;
+import com.codename1.ui.Form;
 import com.codename1.ui.Image;
+import com.codename1.ui.animations.CommonTransitions;
+import com.codename1.ui.animations.Transition;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
 
@@ -81,6 +86,17 @@ public class CountryCodePicker extends Button {
     }
     
     protected void showPickerForm() {
-        new CountryPickerForm(this, flagResource).show();
+        final Form f = getCurrentForm();
+        final Transition t = f.getTransitionOutAnimator();
+        f.setTransitionOutAnimator(CommonTransitions.createEmpty());
+        Form tf = new CountryPickerForm(this, flagResource);
+        tf.addShowListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                f.setTransitionOutAnimator(t);
+                f.removeShowListener(this);
+            }
+        });
+        tf.show();
     }
 }

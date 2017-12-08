@@ -25,6 +25,9 @@
         <val key="BlackToolbar.transparency" value="255" />
         <val key="ConnectWithSocialButton.derive" value="Label " />
         <val key="ConnectWithSocialButton.fgColor" value="2775a4" />
+        <font key="ConnectWithSocialButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="ConnectWithSocialButton.padUnit" value="2,2,2,2" />
+        <val key="ConnectWithSocialButton.padding" value="4.0,4.0,4.0,4.0" />
         <val key="ConnectWithSocialButton.press#derive" value="ConnectWithSocialButton" />
         <val key="ConnectWithSocialButton.sel#derive" value="ConnectWithSocialButton" />
         <val key="CountryCodePicker.align" value="1" />
@@ -36,10 +39,8 @@
         <val key="CountryCodePicker.press#derive" value="CountryCodePicker" />
         <val key="CountryCodePicker.sel#derive" value="CountryCodePicker" />
         <val key="CountryCodePicker.transparency" value="0" />
-        <val key="Digit.align" value="1" />
-        <border key="Digit.border" type="underline"  millimeters="false" thickness="2.0" color="0" />
+        <val key="Digit.derive" value="TextField" />
         <val key="Digit.dis#derive" value="Digit" />
-        <val key="Digit.fgColor" value="0" />
         <font key="Digit.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.7" />
         <val key="Digit.marUnit" value="0,2,0,2" />
         <val key="Digit.margin" value="0.0,0.0,4.0,0.0" />
@@ -48,8 +49,6 @@
         <val key="Digit.press#derive" value="Digit" />
         <border key="Digit.sel#border" type="underline"  millimeters="false" thickness="4.0" color="0" />
         <val key="Digit.sel#derive" value="Digit" />
-        <val key="Digit.transparency" value="0" />
-        <val key="ErrorLabel.align" value="1" />
         <val key="ErrorLabel.bgColor" value="ffffff" />
         <val key="ErrorLabel.dis#derive" value="ErrorLabel" />
         <val key="ErrorLabel.fgColor" value="cc0000" />
@@ -64,11 +63,8 @@
         <val key="FlagButton.press#derive" value="FlagButton" />
         <val key="FlagButton.sel#derive" value="FlagButton" />
         <val key="FlagsLetter.bgColor" value="f9f9f9" />
+        <val key="FlagsLetter.derive" value="Label" />
         <val key="FlagsLetter.fgColor" value="525760" />
-        <font key="FlagsLetter.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
-        <val key="FlagsLetter.margin" value="0.0,0.0,0.0,0.0" />
-        <val key="FlagsLetter.padUnit" value="2,2,2,2" />
-        <val key="FlagsLetter.padding" value="3.0,3.0,3.0,3.0" />
         <val key="FlagsLetter.transparency" value="255" />
         <val key="FloatingActionButton.bgColor" value="0" />
         <val key="FloatingActionButton.fgColor" value="ffffff" />
@@ -87,9 +83,7 @@
         <val key="ForgotPassword.transparency" value="0" />
         <val key="Form.bgColor" value="ffffff" />
         <val key="Form.transparency" value="255" />
-        <val key="FromToTextField.align" value="1" />
         <val key="FromToTextField.bgColor" value="f9f9f9" />
-        <border key="FromToTextField.border" type="empty" />
         <val key="FromToTextField.dis#derive" value="FromToTextField" />
         <val key="FromToTextField.fgColor" value="0" />
         <font key="FromToTextField.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
@@ -122,7 +116,6 @@
         <val key="History.sel#derive" value="FloatingActionButton" />
         <val key="History.sel#fgColor" value="0" />
         <val key="History.transparency" value="255" />
-        <val key="HistoryLabel.align" value="4" />
         <val key="HistoryLabel.bgColor" value="ffffff" />
         <val key="HistoryLabel.dis#derive" value="HistoryLabel" />
         <val key="HistoryLabel.fgColor" value="0" />
@@ -218,7 +211,6 @@
         <val key="SquareLogo.padUnit" value="2,2,2,2" />
         <val key="SquareLogo.padding" value="2.0,2.0,2.0,2.0" />
         <val key="SquareLogo.transparency" value="255" />
-        <val key="TextField.align" value="1" />
         <border key="TextField.border" type="underline"  millimeters="false" thickness="2.0" color="0" />
         <val key="TextField.fgColor" value="0" />
         <font key="TextField.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
@@ -235,11 +227,10 @@
         <val key="TextField.sel#padding" value="3.0,1.0,0.0,0.0" />
         <val key="TextField.sel#transparency" value="0" />
         <val key="TextField.transparency" value="0" />
-        <val key="TextHint.align" value="1" />
         <val key="TextHint.fgColor" value="a4a4ac" />
         <font key="TextHint.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="2.8" />
         <val key="TextHint.marUnit" value="0,2,0,2" />
-        <val key="TextHint.margin" value="0.0,0.0,3.0,3.0" />
+        <val key="TextHint.margin" value="0.0,0.0,4.0,4.0" />
         <val key="TextHint.padUnit" value="2,0,2,0" />
         <val key="TextHint.padding" value="3.0,1.0,0.0,0.0" />
         <val key="TextHint.transparency" value="0" />
@@ -257,7 +248,7 @@
         <val key="TitleCommand.transparency" value="0" />
         <val key="Toolbar.bgColor" value="ffffff" />
         <border key="Toolbar.border" type="empty" />
-        <val key="Toolbar.transparency" value="255" />
+        <val key="Toolbar.transparency" value="0" />
         <val key="UberForBusinessBackground.bgColor" value="0" />
         <val key="UberForBusinessBackground.margin" value="0.0,0.0,0.0,0.0" />
         <val key="UberForBusinessBackground.padUnit" value="2,2,2,2" />
@@ -299,15 +290,14 @@
         <val key="WhereSeparator.padUnit" value="2,2,2,2" />
         <val key="WhereSeparator.padding" value="0.0,2.0,2.0,2.0" />
         <val key="WhereSeparator.transparency" value="255" />
-        <val key="WhereTo.align" value="1" />
         <val key="WhereTo.bgColor" value="ffffff" />
-        <border key="WhereTo.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="2.0" shadowOpacity="30" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.0" bezierCorners="false" />
+        <border key="WhereTo.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="4.0" shadowOpacity="80" shadowX="0.5" shadowY="0.5" shadowBlur="4.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.3" bezierCorners="false" />
         <val key="WhereTo.fgColor" value="535861" />
         <font key="WhereTo.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.2" />
         <val key="WhereTo.marUnit" value="2,2,2,2" />
         <val key="WhereTo.margin" value="12.0,0.0,2.0,2.0" />
         <val key="WhereTo.padUnit" value="2,2,2,2" />
-        <val key="WhereTo.padding" value="3.0,3.0,3.5,3.5" />
+        <val key="WhereTo.padding" value="4.0,4.0,3.5,3.5" />
         <val key="WhereTo.press#derive" value="WhereTo" />
         <val key="WhereTo.sel#derive" value="WhereTo" />
         <val key="WhereTo.transparency" value="255" />
@@ -348,7 +338,7 @@
         <val key="WhiteOnBlackTitleLeftMargin.marUnit" value="0,2,0,0" />
         <val key="WhiteOnBlackTitleLeftMargin.margin" value="0.0,0.0,8.0,0.0" />
         <val key="WhiteOnBlackTitleLeftMargin.padUnit" value="2,2,2,2" />
-        <val key="WhiteOnBlackTitleLeftMargin.padding" value="1.0,3.0,3.0,3.0" />
+        <val key="WhiteOnBlackTitleLeftMargin.padding" value="3.0,3.0,3.0,3.0" />
     </theme>
     <image name="tile.png"  />
     <image name="uber-logo.png"  />
