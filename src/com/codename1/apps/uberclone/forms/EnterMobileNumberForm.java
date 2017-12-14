@@ -23,7 +23,11 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import com.codename1.apps.uberclone.server.UserService;
 import com.codename1.components.FloatingActionButton;
+import com.codename1.components.ToastBar;
+import com.codename1.sms.intercept.SMSInterceptor;
+import com.codename1.sms.twilio.TwilioSMS;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Component;
 import com.codename1.ui.FontImage;
@@ -69,8 +73,22 @@ public class EnterMobileNumberForm extends Form {
             String number = phoneNumber.getText();
             if(number.startsWith("0")) {
                 number = number.substring(1);
+            }            
+            
+            String phone = countryCodeButton.getText() + "-" + number;
+            EnterSMSVerificationDigitsForm es = new EnterSMSVerificationDigitsForm(phone);
+            es.show();
+                        
+            if(SMSInterceptor.isSupported()) {
+                SMSInterceptor.grabNextSMS(s -> {
+                    if(UserService.validateSMSActivationCode(s)) {
+                        new EnterPasswordForm(phone).show();
+                        ToastBar.showMessage("Automatically Validated Phone Number!", FontImage.MATERIAL_THUMB_UP);
+                    }
+                });
             }
-            new EnterSMSVerificationDigitsForm(countryCodeButton.getText() + "-" + number).show();
+            
+            UserService.sendSMSActivationCode(phone);
         });
     }
 }

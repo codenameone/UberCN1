@@ -23,6 +23,7 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import com.codename1.apps.uberclone.server.LocationService;
 import com.codename1.apps.uberclone.tools.MapLayout;
 import com.codename1.components.FloatingActionButton;
 import com.codename1.components.MultiButton;
@@ -64,8 +65,16 @@ public class MapForm extends Form {
     private Image square;
 
     private Image dropShadow;
+    private static MapForm instance;
     
-    public MapForm() {
+    public static MapForm get() {
+        if(instance == null) {
+            instance = new MapForm();
+        }
+        return instance;
+    }
+    
+    private MapForm() {
         super(new LayeredLayout());
         setScrollableY(false);
         
@@ -82,11 +91,35 @@ public class MapForm extends Form {
         Container mapLayer = new Container();
         mapLayer.setLayout(new MapLayout(mc, mapLayer));
         
-        Coord telAviv = new Coord(32.072449, 34.778613);
-        mc.zoom(telAviv, mc.getMaxZoom() + 1);
-        Label car = new Label(Resources.getGlobalResources().getImage("map-vehicle-icon-uberX.png"));
-        car.getAllStyles().setOpacity(140);
-        mapLayer.add(telAviv, car);
+        LocationService.bind(user -> {
+            Label userCar = new Label(Resources.getGlobalResources().getImage("map-vehicle-icon-uberX.png")) {
+                @Override
+                public void paint(Graphics g) {
+                    g.rotate(user.direction.get(), getWidth() / 2, getHeight() / 2);
+                    super.paint(g);
+                    g.resetAffine();
+                }
+            };
+            userCar.getAllStyles().setOpacity(140);
+            mapLayer.add(new Coord(user.latitude.get(), user.longitude.get()), userCar);
+            user.latitude.addChangeListener(p -> {
+                Coord crd = (Coord)mapLayer.getLayout().getComponentConstraint(userCar);
+                if(crd.getLatitude() != user.latitude.get()) {
+                    userCar.remove();
+                    mapLayer.add(new Coord(user.latitude.get(), user.longitude.get()), userCar);                    
+                    mapLayer.animateLayout(100);
+                }
+            });
+            user.longitude.addChangeListener(p -> {
+                Coord crd = (Coord)mapLayer.getLayout().getComponentConstraint(userCar);
+                if(crd.getLongitude()!= user.longitude.get()) {
+                    userCar.remove();
+                    mapLayer.add(new Coord(user.latitude.get(), user.longitude.get()), userCar);                    
+                    mapLayer.animateLayout(100);
+                }
+            });
+        }, loc ->  mc.zoom(new Coord(loc.getLatitude(), loc.getLongitude()), mc.getMaxZoom() + 1));
+        
         add(mapLayer);
         
         square = Image.createImage(convertToPixels(0.7f), convertToPixels(0.7f), 0xff000000);

@@ -23,10 +23,13 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import com.codename1.apps.uberclone.server.UserService;
 import com.codename1.components.FloatingActionButton;
+import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
@@ -74,7 +77,7 @@ public class EnterSMSVerificationDigitsForm extends Form {
                 repaint();
                 return;
             }
-            new EnterPasswordForm().show();
+            new EnterPasswordForm(phone).show();
         });
     }
 
@@ -109,9 +112,8 @@ public class EnterSMSVerificationDigitsForm extends Form {
         return s.toString();
     }
     
-    public boolean isValid(String s) {
-        // just for now
-        return s.startsWith("0");
+    public final boolean isValid(String s) {
+        return UserService.validateSMSActivationCode(s);
     }
     
     private void onTypeNext(TextField current, TextField next) {

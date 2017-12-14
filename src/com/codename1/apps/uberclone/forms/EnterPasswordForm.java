@@ -23,11 +23,15 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import com.codename1.apps.uberclone.dataobj.User;
+import com.codename1.apps.uberclone.server.UserService;
 import com.codename1.components.FloatingActionButton;
+import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
@@ -36,6 +40,8 @@ import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Border;
+import com.codename1.util.FailureCallback;
+import com.codename1.util.SuccessCallback;
 
 /**
  * Implements the enter password form
@@ -43,15 +49,25 @@ import com.codename1.ui.plaf.Border;
  * @author Shai Almog
  */
 public class EnterPasswordForm extends Form {
-    public EnterPasswordForm() {
+    public EnterPasswordForm(String phone) {
         super(new BorderLayout());
         Form previous = getCurrentForm();
+        
+        InfiniteProgress ip = new InfiniteProgress();
+        Dialog dlg = ip.showInifiniteBlocking();
+        boolean exists = UserService.userExists(phone);
+        dlg.dispose();
+        
         getToolbar().setBackCommand("", Toolbar.BackCommandPolicy.AS_ARROW, e -> previous.showBack());
         
         Container box = new Container(BoxLayout.y());
         box.setScrollableY(true);
         
-        box.add(new SpanLabel("Welcome back, signin to continue", "FlagButton"));
+        if(exists) {
+            box.add(new SpanLabel("Welcome back, signin to continue", "FlagButton"));
+        } else {
+            box.add(new SpanLabel("Please enter a new password", "FlagButton"));
+        }
         TextField password = new TextField("", "Enter your password", 80, TextField.PASSWORD);
         setEditOnShow(password);
         box.add(password);
@@ -70,7 +86,24 @@ public class EnterPasswordForm extends Form {
         fab.bindFabToContainer(this);
         
         fab.addActionListener(e -> {
-            new MapForm().show();
+            Dialog ipDlg = new InfiniteProgress().showInifiniteBlocking();
+            
+            if(exists) {
+                UserService.loginWithPhone(phone, password.getText(), (value) -> {
+                    MapForm.get().show();
+                }, (sender, err, errorCode, errorMessage) -> {
+                    ipDlg.dispose();
+                    error.setText("Login error");
+                    error.setVisible(true);
+                    revalidate();
+                });
+            } else {                
+                UserService.addNewUser(new User().
+                        phone.set(phone).
+                        password.set(password.getText()).
+                        driver.set(false));
+                MapForm.get().show();
+            }
         });
     }
     

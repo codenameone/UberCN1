@@ -2,6 +2,8 @@ package com.codename1.apps.uberclone;
 
 
 import com.codename1.apps.uberclone.forms.LoginForm;
+import com.codename1.apps.uberclone.forms.MapForm;
+import com.codename1.apps.uberclone.server.UserService;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
@@ -40,7 +42,13 @@ public class UberClone {
             current.show();
             return;
         }
-        new LoginForm().show();
+        
+        if(UserService.isLoggedIn()) {
+            UserService.loadUser();
+            MapForm.get().show();
+        } else {
+            new LoginForm().show();
+        }
     }
 
     public void stop() {
