@@ -35,6 +35,7 @@ import com.codename1.util.FailureCallback;
 import com.codename1.util.SuccessCallback;
 import java.util.Map;
 import java.util.Random;
+import static com.codename1.apps.uberclone.server.Globals.*;
 
 /**
  * A generic service class that handles login/creation etc.
@@ -58,7 +59,7 @@ public class UserService {
     }
     
     public static void sendSMSActivationCode(String phoneNumber) {
-        TwilioSMS tw = TwilioSMS.create("ACa4f4809e10981e60db18ff61adcc36fa", "1d8596aea94201da6830f14b20dda463", "+14159149077");
+        TwilioSMS tw = TwilioSMS.create(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_PHONE);
 
         Random r = new Random();
         String val = "";
@@ -76,7 +77,7 @@ public class UserService {
     }
     
     public static boolean userExists(String phoneNumber) {
-        Response<byte[]> b = Rest.get(Globals.SERVER_URL + "user/exists").
+        Response<byte[]> b = Rest.get(SERVER_URL + "user/exists").
                 acceptJson().
                 queryParam("phone", phoneNumber).getAsBytes();
         if(b.getResponseCode() == 200) {
@@ -87,7 +88,7 @@ public class UserService {
     }
     
     public static boolean addNewUser(User u) {
-        Response<String> token = Rest.post(Globals.SERVER_URL + "user/add").
+        Response<String> token = Rest.post(SERVER_URL + "user/add").
                 jsonContent().
                 body(u.getPropertyIndex().toJSON()).getAsString();
         if(token.getResponseCode() != 200) {
@@ -98,7 +99,7 @@ public class UserService {
     }
     
     public static void loginWithPhone(String phoneNumber, String password, final SuccessCallback<User> onSuccess, final FailureCallback<Object> onError) {
-        Rest.get(Globals.SERVER_URL + "user/login").
+        Rest.get(SERVER_URL + "user/login").
                 acceptJson().
                 queryParam("password", password).
                 queryParam("phone", phoneNumber).

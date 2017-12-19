@@ -29,6 +29,9 @@ package com.codename1.apps.uberclone.server;
  * @author Shai Almog
  */
 public class Globals {
-    public static final String SERVER_URL = "http://localhost:8080/";
-    public static final String SERVER_SOCKET_URL = "ws://localhost:8080/wsMsg";
+    public static final String SERVER_URL = "http://10.0.1.3:8080/";
+    public static final String SERVER_SOCKET_URL = "ws://10.0.1.3:8080/wsMsg";
+    public static final String TWILIO_ACCOUNT_SID = "ACa4f4809e10981e60db18ff61adcc36fa";
+    public static final String TWILIO_AUTH_TOKEN = "1d8596aea94201da6830f14b20dda463";
+    public static final String TWILIO_FROM_PHONE = "+14159149077";
 }
