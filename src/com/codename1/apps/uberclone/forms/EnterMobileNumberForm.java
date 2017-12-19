@@ -78,17 +78,19 @@ public class EnterMobileNumberForm extends Form {
             String phone = countryCodeButton.getText() + "-" + number;
             EnterSMSVerificationDigitsForm es = new EnterSMSVerificationDigitsForm(phone);
             es.show();
-                        
-            if(SMSInterceptor.isSupported()) {
-                SMSInterceptor.grabNextSMS(s -> {
-                    if(UserService.validateSMSActivationCode(s)) {
-                        new EnterPasswordForm(phone).show();
-                        ToastBar.showMessage("Automatically Validated Phone Number!", FontImage.MATERIAL_THUMB_UP);
-                    }
-                });
-            }
-            
-            UserService.sendSMSActivationCode(phone);
+                
+            es.addShowListener(ee -> {
+                if(SMSInterceptor.isSupported()) {
+                    SMSInterceptor.grabNextSMS(s -> {
+                        if(UserService.validateSMSActivationCode(s)) {
+                            new EnterPasswordForm(phone).show();
+                            ToastBar.showMessage("Automatically Validated Phone Number!", FontImage.MATERIAL_THUMB_UP);
+                        }
+                    });
+                }
+
+                UserService.sendSMSActivationCode(phone);
+            });
         });
     }
 }
