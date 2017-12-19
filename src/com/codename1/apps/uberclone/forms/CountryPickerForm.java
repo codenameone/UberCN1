@@ -68,6 +68,7 @@ public class CountryPickerForm extends Form {
                 // picked country...
                 sourceButton.setIcon(b.getIcon());
                 sourceButton.setText("+" + currentCountryCode);
+                sourceButton.getComponentForm().showBack();
             });
             add(b);
         }
