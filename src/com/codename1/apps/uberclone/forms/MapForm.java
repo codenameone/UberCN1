@@ -40,13 +40,11 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.Painter;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.animations.CommonTransitions;
 import com.codename1.ui.events.FocusListener;
-import com.codename1.ui.geom.Rectangle;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -66,6 +64,7 @@ public class MapForm extends Form {
 
     private Image dropShadow;
     private static MapForm instance;
+    private int shadowHeight;
     
     public static MapForm get() {
         if(instance == null) {
@@ -78,8 +77,9 @@ public class MapForm extends Form {
         super(new LayeredLayout());
         setScrollableY(false);
         
+        shadowHeight = convertToPixels(4);
         Display.getInstance().callSeriallyOnIdle(() -> {
-            dropShadow = LoginForm.squareShadow(getDisplayWidth(), 30, convertToPixels(3), 0.40f);
+            dropShadow = Effects.squareShadow(getDisplayWidth() + shadowHeight * 2, shadowHeight * 2, shadowHeight, 0.3f);
         });
         
         setTransitionOutAnimator(CommonTransitions.createEmpty());
@@ -118,7 +118,7 @@ public class MapForm extends Form {
                     mapLayer.animateLayout(100);
                 }
             });
-        }, loc ->  mc.zoom(new Coord(loc.getLatitude(), loc.getLongitude()), mc.getMaxZoom() + 1));
+        }, loc ->  mc.zoom(new Coord(loc.getLatitude(), loc.getLongitude()), mc.getMaxZoom()));
         
         add(mapLayer);
         
@@ -223,8 +223,8 @@ public class MapForm extends Form {
                 if(layer.getComponentCount() > 1) {
                     g1.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
                 } 
-                g1.drawImage(dropShadow, rect.getX(), rect.getY() + rect.getHeight() - dropShadow.getHeight(), rect.getWidth(), dropShadow.getHeight());
-                g1.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight() - dropShadow.getHeight() / 2);
+                g1.drawImage(dropShadow, rect.getX() - shadowHeight, rect.getY() + rect.getHeight() - dropShadow.getHeight() / 4 * 3);
+                g1.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getY() + rect.getHeight() - shadowHeight);
             } else {
                 g1.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
             }
