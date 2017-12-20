@@ -46,6 +46,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.ui.util.Effects;
 import com.codename1.ui.util.Resources;
 
 /**
@@ -76,7 +77,7 @@ public class LoginForm extends Form {
         );
         
         startThread(() -> {
-            final Image shadow = squareShadow(squareLogo.getPreferredW(), squareLogo.getPreferredH(), convertToPixels(14), 0.35f);
+            final Image shadow = Effects.squareShadow(squareLogo.getPreferredW(), squareLogo.getPreferredH(), convertToPixels(14), 0.35f);
             callSerially(() -> {
                 logo.replace(placeholder, BorderLayout.centerAbsolute(new Label(shadow, "Container")), null);
                 revalidate();
@@ -123,27 +124,6 @@ public class LoginForm extends Form {
 
     @Override
     protected void initGlobalToolbar() {
-    }
-
-    /**
-     * Generates a square shadow and returns it
-     * 
-     * @param width the width of the shadow image
-     * @param height the height of the shadow image
-     * @param blurRadius a shadow is blurred using a gaussian blur when available, a value of 10 is often satisfactory
-     * @param opacity the opacity of the shadow between 0 - 1 where 1 is completely opaque
-     * @return an image containing the shadow for source
-     */
-    public static Image squareShadow(int width, int height, int blurRadius, float opacity) {
-        Image img = Image.createImage(width + blurRadius * 2, height + blurRadius * 2, 0 );
-        Graphics g = img.getGraphics();
-        g.setAlpha((int)(opacity * 255.0));
-        g.setColor(0);
-        g.fillRect(blurRadius, blurRadius, width, height);
-        if(Display.getInstance().isGaussianBlurSupported()) {
-            img = Display.getInstance().gaussianBlurImage(img, blurRadius);
-        }
-        return img;                
     }
     
     class LoginFormPainter implements Painter, Animation {
