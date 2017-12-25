@@ -31,6 +31,7 @@ import com.codename1.location.Location;
 import com.codename1.location.LocationListener;
 import com.codename1.location.LocationManager;
 import static com.codename1.ui.CN.*;
+import com.codename1.ui.util.UITimer;
 import com.codename1.util.EasyThread;
 import com.codename1.util.LazyValue;
 import com.codename1.util.SuccessCallback;
@@ -66,9 +67,10 @@ public class LocationService {
             @Override
             public void locationUpdated(Location location) {
                 lastKnownLocation = location;
-                if(locationCallback != null) {
-                    locationCallback.onSucess(location);
+                if(location.getStatus() == LocationManager.AVAILABLE && locationCallback != null) {
+                    SuccessCallback<Location>  c = locationCallback;
                     locationCallback = null;
+                    c.onSucess(location);
                 }
                 if(server != null) {
                     server.sendLocationUpdate();
@@ -79,6 +81,7 @@ public class LocationService {
             public void providerStateChanged(int newState) {
             }
         });        
+        new SocketConnection().connect();
     }
     
     class SocketConnection extends WebSocket {
@@ -116,7 +119,7 @@ public class LocationService {
                 }
                 
                 long time = System.currentTimeMillis();
-                if(lastUpdateTime - time < MAX_UPDATE_FREQUENCY) {
+                if(time - lastUpdateTime < MAX_UPDATE_FREQUENCY) {
                     return;
                 }
                 lastUpdateTime = time;
@@ -155,6 +158,8 @@ public class LocationService {
 
         @Override
         protected void onClose(int i, String string) {
+            Log.p("Connection closed! Error... trying to reconnect in 5 seconds");
+            UITimer.timer(5000, false, () -> connect());
         }
 
         @Override
@@ -192,7 +197,8 @@ public class LocationService {
         }
 
         @Override
-        protected void onError(Exception excptn) {
+        protected void onError(Exception e) {
+            Log.e(e);
         }
         
     }

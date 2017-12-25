@@ -91,17 +91,21 @@ public class MapForm extends Form {
         Container mapLayer = new Container();
         mapLayer.setLayout(new MapLayout(mc, mapLayer));
         
+        final Image carImage = Resources.getGlobalResources().getImage("map-vehicle-icon-uberX.png");
         LocationService.bind(user -> {
-            Label userCar = new Label(Resources.getGlobalResources().getImage("map-vehicle-icon-uberX.png")) {
-                @Override
-                public void paint(Graphics g) {
-                    g.rotate(user.direction.get(), getWidth() / 2, getHeight() / 2);
-                    super.paint(g);
-                    g.resetAffine();
-                }
-            };
+            Label userCar = new Label();
+            userCar.putClientProperty("angle", user.direction.get());
+            userCar.setIcon(carImage.rotate((int)user.direction.getFloat()));
             userCar.getAllStyles().setOpacity(140);
             mapLayer.add(new Coord(user.latitude.get(), user.longitude.get()), userCar);
+            mapLayer.revalidate();
+            user.direction.addChangeListener(p -> {
+                Float angle = (Float)userCar.getClientProperty("angle");
+                if(angle == null || angle.floatValue() != user.direction.getFloat()) {
+                    userCar.setIcon(carImage.rotate((int)user.direction.getFloat()));
+                    userCar.putClientProperty("angle", user.direction.get());
+                }
+            });
             user.latitude.addChangeListener(p -> {
                 Coord crd = (Coord)mapLayer.getLayout().getComponentConstraint(userCar);
                 if(crd.getLatitude() != user.latitude.get()) {

@@ -98,11 +98,17 @@ public class EnterPasswordForm extends Form {
                     revalidate();
                 });
             } else {                
-                UserService.addNewUser(new User().
+                if(UserService.addNewUser(new User().
                         phone.set(phone).
                         password.set(password.getText()).
-                        driver.set(false));
-                MapForm.get().show();
+                        driver.set(false))) {
+                    MapForm.get().show();
+                } else {
+                    ipDlg.dispose();
+                    error.setText("Signup error");
+                    error.setVisible(true);
+                    revalidate();
+                }
             }
         });
     }

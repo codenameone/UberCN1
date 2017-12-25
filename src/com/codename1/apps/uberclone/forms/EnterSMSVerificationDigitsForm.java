@@ -38,6 +38,7 @@ import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Border;
+import com.codename1.ui.util.UITimer;
 
 /**
  * Implements the SMS verification code logic
@@ -45,6 +46,8 @@ import com.codename1.ui.plaf.Border;
  * @author Shai Almog
  */
 public class EnterSMSVerificationDigitsForm extends Form {
+    private int resendTime = 120;
+    private UITimer timer;
     public EnterSMSVerificationDigitsForm(String phone) {
         super(new BorderLayout());
         Form previous = getCurrentForm();
@@ -64,8 +67,17 @@ public class EnterSMSVerificationDigitsForm extends Form {
         
         add(CENTER, box);
         
-        Label resend = new Label("Resend code in 00:12", "ResendCode");
+        Label resend = new Label("Resend code in " + formatSeconds(resendTime), "ResendCode");
         add(SOUTH, resend);
+        timer = UITimer.timer(1000, true, this, () -> {
+            if(resendTime > 0) {
+                resendTime--;
+                resend.setText("Resend code in " + formatSeconds(resendTime));
+                return;
+            }
+            timer.cancel();
+            UserService.resendSMSActivationCode(phone);
+        });
 
         FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ARROW_FORWARD);
         fab.bindFabToContainer(this);
@@ -81,6 +93,17 @@ public class EnterSMSVerificationDigitsForm extends Form {
         });
     }
 
+    private String formatSeconds(int time) {
+        return twoDigits(time / 60) + ":" + twoDigits(time % 60);
+    }
+    
+    private String twoDigits(int t) {
+        if(t < 10) {
+            return "0" + t;
+        }
+        return "" + t;
+    }
+    
     private TextField[] createDigits(int count) {
         TextField[] response = new TextField[count];
         for(int iter = 0 ; iter < count ; iter++) {

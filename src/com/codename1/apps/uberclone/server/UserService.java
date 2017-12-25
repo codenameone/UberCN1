@@ -24,7 +24,6 @@
 package com.codename1.apps.uberclone.server;
 
 import com.codename1.apps.uberclone.dataobj.User;
-import com.codename1.components.ToastBar;
 import com.codename1.io.Preferences;
 import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
@@ -71,6 +70,11 @@ public class UserService {
         tw.sendSmsAsync(phoneNumber, val);
     }
     
+    public static void resendSMSActivationCode(String phoneNumber) {
+        TwilioSMS tw = TwilioSMS.create(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_PHONE);
+        tw.sendSmsAsync(phoneNumber, Preferences.get("phoneVerification", null));
+    }
+
     public static boolean validateSMSActivationCode(String code) {
         String val = Preferences.get("phoneVerification", null);
         return code.indexOf(val) > -1 && code.length() < 80;
