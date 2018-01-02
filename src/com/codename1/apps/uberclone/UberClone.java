@@ -22,11 +22,20 @@ import com.codename1.ui.layouts.BoxLayout;
  * of building native mobile applications using Java.
  */
 public class UberClone {
-
+    private static boolean driverMode;
     private Form current;
     private Resources theme;
 
+    protected boolean driverMode() {
+        return false;
+    }
+    
+    public static boolean isDriverMode() {
+        return driverMode;
+    }
+    
     public void init(Object context) {
+        driverMode = driverMode();
         NetworkManager.getInstance().updateThreadCount(2);
 
         theme = UIManager.initFirstTheme("/theme");

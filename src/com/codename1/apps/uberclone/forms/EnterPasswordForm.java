@@ -23,6 +23,7 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import com.codename1.apps.uberclone.UberClone;
 import com.codename1.apps.uberclone.dataobj.User;
 import com.codename1.apps.uberclone.server.UserService;
 import com.codename1.components.FloatingActionButton;
@@ -101,7 +102,7 @@ public class EnterPasswordForm extends Form {
                 if(UserService.addNewUser(new User().
                         phone.set(phone).
                         password.set(password.getText()).
-                        driver.set(false))) {
+                        driver.set(UberClone.isDriverMode()))) {
                     MapForm.get().show();
                 } else {
                     ipDlg.dispose();
