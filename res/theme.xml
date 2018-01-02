@@ -6,9 +6,13 @@
     <image name="gradient-overlay.png"  />
     <image name="map-vehicle-icon-uberX.png" type="multi"  />
     <image name="menu.png" type="multi"  />
+    <image name="Pin.png" type="multi"  />
+    <image name="ride.png" type="multi"  />
+    <image name="searching-cab-icon.png" type="multi"  />
     <theme name="Theme">
         <val key="@includeNativeBool" value="true" />
         <val key="@menuImage" value="menu.png" />
+        <val key="@tickerSpeedInt" value="0" />
         <val key="AvatarBlock.align" value="1" />
         <val key="AvatarBlock.bgColor" value="0" />
         <border key="AvatarBlock.border" type="underline"  millimeters="false" thickness="2.0" color="5396320" />
@@ -18,6 +22,19 @@
         <val key="AvatarBlock.padUnit" value="2,2,2,2" />
         <val key="AvatarBlock.padding" value="4.0,4.0,4.0,4.0" />
         <val key="AvatarBlock.transparency" value="255" />
+        <val key="BlackButton.align" value="4" />
+        <val key="BlackButton.bgColor" value="0" />
+        <border key="BlackButton.border" type="roundRect" strokeColor="0" strokeOpacity="255" strokeThickness="0.0" strokeMM="false" shadowSpread="10.0" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.0" bezierCorners="false" />
+        <val key="BlackButton.dis#derive" value="BlackButton" />
+        <val key="BlackButton.fgColor" value="ffffff" />
+        <font key="BlackButton.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
+        <val key="BlackButton.marUnit" value="2,2,2,2" />
+        <val key="BlackButton.margin" value="2.0,2.0,4.0,4.0" />
+        <val key="BlackButton.padUnit" value="2,2,2,2" />
+        <val key="BlackButton.padding" value="2.0,2.0,2.0,2.0" />
+        <val key="BlackButton.press#derive" value="BlackButton" />
+        <val key="BlackButton.sel#derive" value="BlackButton" />
+        <val key="BlackButton.transparency" value="255" />
         <val key="BlackToolbar.bgColor" value="0" />
         <val key="BlackToolbar.margin" value="0.0,0.0,0.0,0.0" />
         <val key="BlackToolbar.padUnit" value="2,2,2,2" />
@@ -155,6 +172,32 @@
         <val key="LogoBackground.bgType" value="2" />
         <val key="LogoBackground.margin" value="0.0,0.0,0.0,0.0" />
         <val key="LogoBackground.transparency" value="255" />
+        <border key="MarginSeparator.border" type="underline"  millimeters="false" thickness="2.0" color="15592941" />
+        <val key="MarginSeparator.marUnit" value="0,2,0,2" />
+        <val key="MarginSeparator.margin" value="0.0,0.0,4.0,4.0" />
+        <val key="MarginSeparator.padding" value="0.0,2.0,0.0,0.0" />
+        <val key="MarginSeparator.transparency" value="0" />
+        <val key="NavigationLabel.align" value="1" />
+        <val key="NavigationLabel.fgColor" value="000000" />
+        <font key="NavigationLabel.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="NavigationLabel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="NavigationLabel.padUnit" value="2,2,2,2" />
+        <val key="NavigationLabel.padding" value="1.0,1.0,1.0,1.0" />
+        <val key="NavigationLabel.transparency" value="0" />
+        <val key="NavigationMinuteDescLabel.align" value="4" />
+        <val key="NavigationMinuteDescLabel.fgColor" value="ffffff" />
+        <font key="NavigationMinuteDescLabel.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="1.4" />
+        <val key="NavigationMinuteDescLabel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="NavigationMinuteDescLabel.padUnit" value="2,2,2,2" />
+        <val key="NavigationMinuteDescLabel.padding" value="0.0,1.0,1.0,1.0" />
+        <val key="NavigationMinuteDescLabel.transparency" value="0" />
+        <val key="NavigationMinuteLabel.align" value="4" />
+        <val key="NavigationMinuteLabel.fgColor" value="ffffff" />
+        <font key="NavigationMinuteLabel.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="NavigationMinuteLabel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="NavigationMinuteLabel.padUnit" value="2,2,2,2" />
+        <val key="NavigationMinuteLabel.padding" value="1.0,0.0,1.0,1.0" />
+        <val key="NavigationMinuteLabel.transparency" value="0" />
         <border key="PhoneNumber.border" type="empty" />
         <val key="PhoneNumber.fgColor" value="0" />
         <font key="PhoneNumber.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
@@ -174,6 +217,22 @@
         <val key="ResendCode.margin" value="0.0,0.0,0.0,0.0" />
         <val key="ResendCode.padUnit" value="0,2,2,0" />
         <val key="ResendCode.padding" value="0.0,6.0,3.0,0.0" />
+        <val key="RideTitle.align" value="4" />
+        <val key="RideTitle.fgColor" value="000000" />
+        <font key="RideTitle.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.2" />
+        <val key="RideTitle.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="RideTitle.padUnit" value="2,2,2,2" />
+        <val key="RideTitle.padding" value="4.0,4.0,4.0,4.0" />
+        <val key="RideTitle.transparency" value="0" />
+        <val key="SearchingDialog.bgColor" value="ffffff" />
+        <border key="SearchingDialog.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="10.0" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="true" CornerRadius="1.5" bezierCorners="false" />
+        <val key="SearchingDialog.fgColor" value="000000" />
+        <font key="SearchingDialog.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.2" />
+        <val key="SearchingDialog.marUnit" value="2,2,2,2" />
+        <val key="SearchingDialog.margin" value="0.0,0.0,3.0,3.0" />
+        <val key="SearchingDialog.padUnit" value="2,2,2,2" />
+        <val key="SearchingDialog.padding" value="4.0,4.0,4.0,4.0" />
+        <val key="SearchingDialog.transparency" value="255" />
         <border key="Separator.border" type="underline"  millimeters="false" thickness="2.0" color="15592941" />
         <val key="Separator.margin" value="0.0,0.0,0.0,0.0" />
         <val key="Separator.padding" value="0.0,2.0,0.0,0.0" />
@@ -320,6 +379,16 @@
         <val key="WhereToButtonLine1.press#derive" value="WhereToButtonLine1" />
         <val key="WhereToButtonLine1.sel#derive" value="WhereToButtonLine1" />
         <val key="WhereToButtonLine1.transparency" value="0" />
+        <border key="WhereToButtonLine2.border" type="underline"  millimeters="false" thickness="2.0" color="15592941" />
+        <val key="WhereToButtonLine2.dis#derive" value="WhereToButtonLine2" />
+        <val key="WhereToButtonLine2.fgColor" value="cccccc" />
+        <font key="WhereToButtonLine2.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.4" />
+        <val key="WhereToButtonLine2.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="WhereToButtonLine2.padUnit" value="2,2,2,2" />
+        <val key="WhereToButtonLine2.padding" value="0.0,2.5,2.0,4.0" />
+        <val key="WhereToButtonLine2.press#derive" value="WhereToButtonLine2" />
+        <val key="WhereToButtonLine2.sel#derive" value="WhereToButtonLine2" />
+        <val key="WhereToButtonLine2.transparency" value="0" />
         <border key="WhereToButtonLineNoBorder.border" type="empty" />
         <val key="WhereToButtonLineNoBorder.derive" value="WhereToButtonLine1" />
         <val key="WhereToButtonLineNoBorder.dis#derive" value="WhereToButtonLineNoBorder" />

@@ -44,6 +44,10 @@ import static com.codename1.apps.uberclone.server.Globals.*;
 public class UserService {
     private static User me;
     
+    public static User getUser() {
+        return me;
+    }
+    
     public static void loadUser() {
         me = new User();
         PreferencesObject.create(me).bind();        

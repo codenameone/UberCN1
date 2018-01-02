@@ -12,6 +12,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.io.Log;
+import com.codename1.io.NetworkManager;
 import com.codename1.ui.Toolbar;
 import java.io.IOException;
 import com.codename1.ui.layouts.BoxLayout;
@@ -26,6 +27,8 @@ public class UberClone {
     private Resources theme;
 
     public void init(Object context) {
+        NetworkManager.getInstance().updateThreadCount(2);
+
         theme = UIManager.initFirstTheme("/theme");
 
         // Enable Toolbar on all Forms by default

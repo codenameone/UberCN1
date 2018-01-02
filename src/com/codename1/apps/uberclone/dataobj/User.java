@@ -52,10 +52,11 @@ public class User implements PropertyBusinessObject {
     public final FloatProperty<User> direction = new FloatProperty<>("direction");
     public final Property<String, User> authToken = new Property<>("authToken");
     public final Property<String, User> password = new Property<>("password");
+    public final Property<String, User> pushToken = new Property<>("pushToken");
 
     private final PropertyIndex idx = new PropertyIndex(this, "User", id, givenName, 
             surname, phone, email, facebookId, googleId, driver, car, currentRating,
-            latitude, longitude, direction, authToken, password);
+            latitude, longitude, direction, authToken, password, pushToken);
     
     @Override
     public PropertyIndex getPropertyIndex() {

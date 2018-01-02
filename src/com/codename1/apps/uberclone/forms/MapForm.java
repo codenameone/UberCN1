@@ -24,12 +24,19 @@
 package com.codename1.apps.uberclone.forms;
 
 import com.codename1.apps.uberclone.server.LocationService;
+import com.codename1.apps.uberclone.server.SearchService;
+import com.codename1.apps.uberclone.tools.AutoCompleteAddressInput;
+import com.codename1.apps.uberclone.tools.BlackAndWhiteBorder;
+import com.codename1.apps.uberclone.tools.BlinkDot;
+import com.codename1.apps.uberclone.tools.CompletionContainer;
 import com.codename1.apps.uberclone.tools.MapLayout;
 import com.codename1.components.FloatingActionButton;
 import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.googlemaps.MapContainer;
+import com.codename1.location.Location;
 import com.codename1.maps.Coord;
+import com.codename1.maps.MapListener;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
@@ -48,10 +55,13 @@ import com.codename1.ui.events.FocusListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Effects;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.util.UITimer;
+import java.util.List;
 
 /**
  * The main form of the application containing the map code
@@ -65,6 +75,12 @@ public class MapForm extends Form {
     private Image dropShadow;
     private static MapForm instance;
     private int shadowHeight;
+    private MapContainer mc;
+    private AutoCompleteAddressInput lastFocused;
+    private MapListener lastMapListener;
+    private UITimer lastTimer;
+    private Button whereTo;
+    private Container mapLayer;
     
     public static MapForm get() {
         if(instance == null) {
@@ -84,11 +100,12 @@ public class MapForm extends Form {
         
         setTransitionOutAnimator(CommonTransitions.createEmpty());
         
-        MapContainer mc = new MapContainer(MAP_JS_KEY);
+        mc = new MapContainer(MAP_JS_KEY);
         mc.setShowMyLocation(true);
         add(mc);
         
-        Container mapLayer = new Container();
+        mapLayer = new Container();
+        mapLayer.setName("Map Layer");
         mapLayer.setLayout(new MapLayout(mc, mapLayer));
         
         final Image carImage = Resources.getGlobalResources().getImage("map-vehicle-icon-uberX.png");
@@ -97,6 +114,8 @@ public class MapForm extends Form {
             userCar.putClientProperty("angle", user.direction.get());
             userCar.setIcon(carImage.rotate((int)user.direction.getFloat()));
             userCar.getAllStyles().setOpacity(140);
+            MapLayout.setHorizontalAlignment(userCar, MapLayout.HALIGN.CENTER);
+            MapLayout.setVerticalAlignment(userCar, MapLayout.VALIGN.MIDDLE);
             mapLayer.add(new Coord(user.latitude.get(), user.longitude.get()), userCar);
             mapLayer.revalidate();
             user.direction.addChangeListener(p -> {
@@ -122,12 +141,12 @@ public class MapForm extends Form {
                     mapLayer.animateLayout(100);
                 }
             });
-        }, loc ->  mc.zoom(new Coord(loc.getLatitude(), loc.getLongitude()), mc.getMaxZoom()));
+        }, loc ->  mc.zoom(new Coord(loc.getLatitude(), loc.getLongitude()), 16));
         
         add(mapLayer);
         
         square = Image.createImage(convertToPixels(0.7f), convertToPixels(0.7f), 0xff000000);
-        Button whereTo = new Button("Where To?", square, "WhereTo");
+        whereTo = new Button("Where To?", square, "WhereTo");
         whereTo.setGap(convertToPixels(3));
         add(BoxLayout.encloseY(whereTo));
         
@@ -158,37 +177,44 @@ public class MapForm extends Form {
         setToolbar(new Toolbar(true));
         CommonCode.constructSideMenu(getToolbar());
     }
-    
-
+        
     void showNavigationToolbar() {
         final Container layer = getLayeredPane(MapForm.class, true);
+        layer.setName("MapFormLayer");
+        layer.setLayout(new BorderLayout());
+        final Container pinLayer = getLayeredPane(AutoCompleteAddressInput.class, false);
+        pinLayer.setName("PinLayer");
+        pinLayer.setLayout(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER_ABSOLUTE));
+        Image pin = Resources.getGlobalResources().getImage("Pin.png");
+        Label pinLabel = new Label(pin);
+        MapLayout.setHorizontalAlignment(pinLabel, MapLayout.HALIGN.CENTER);
+        MapLayout.setVerticalAlignment(pinLabel, MapLayout.VALIGN.BOTTOM);
+        pinLayer.add(CENTER, pinLabel);
         Button back = new Button("", "TitleCommand");
         FontImage.setMaterialIcon(back, FontImage.MATERIAL_ARROW_BACK);
 
-        TextField from = new TextField("", "From", 40, TextField.ANY);
-        TextField to = new TextField("", "Where to?", 40, TextField.ANY);
-
+        CompletionContainer cc = new CompletionContainer(layer);
+        AutoCompleteAddressInput from = new AutoCompleteAddressInput("Current Location", "From", layer, cc, mc);
+        AutoCompleteAddressInput to = new AutoCompleteAddressInput("", "Where To?", layer, cc, mc);
+        from.setCurrentLocation(LocationService.getCurrentLocation());
+                
         Image circle = Image.createImage(square.getWidth(), square.getHeight(), 0);
         Graphics g = circle.getGraphics();
         g.setColor(0xa4a4ac);
         g.setAntiAliased(true);
         g.fillArc(0, 0, circle.getWidth(), circle.getHeight(), 0, 360);
         
-        final Label fromSelected = new Label(square);
-        final Label toSelected = new Label(circle);
+        final Label fromSelected = new Label(circle);
+        final Label toSelected = new Label(square);
         
+        SearchService.nameMyCurrentLocation(LocationService.getCurrentLocation(), name -> from.setTextNoEvent(name));
+        to.requestFocus();
+        lastFocused = to;
         from.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(Component cmp) {
                 fromSelected.setIcon(square);
-                if(layer.getComponentCount() > 1) {
-                    Component c = layer.getComponentAt(1);
-                    c.setY(getDisplayHeight());
-                    layer.animateUnlayout(200, 150, () -> {
-                        c.remove();
-                        revalidate();
-                    });
-                }
+                lastFocused = from;
             }
 
             @Override
@@ -201,7 +227,7 @@ public class MapForm extends Form {
             public void focusGained(Component cmp) {
                 fromSelected.setIcon(circle);
                 toSelected.setIcon(square);
-                showToNavigationBar(layer);
+                lastFocused = to;
             }
 
             @Override
@@ -210,11 +236,20 @@ public class MapForm extends Form {
             }
         });
         
-        from.getHintLabel().setUIID("FromToTextFieldHint");
-        from.setUIID("FromToTextField");
-        to.getHintLabel().setUIID("FromToTextFieldHint");
-        to.setUIID("FromToTextField");
-
+        addMapListener((source, zoom, center) -> {
+            if(lastTimer != null) {
+                lastTimer.cancel();
+            }
+            lastTimer = UITimer.timer(500, false, () -> {
+                lastTimer = null;
+                SearchService.nameMyCurrentLocation(new Location(center.getLatitude(), center.getLongitude()), 
+                        name -> {
+                            lastFocused.setTextNoEvent(name);
+                            lastFocused.setCurrentLocation(new Location(center.getLatitude(), center.getLongitude()));
+                        });
+            });
+        });
+        
         Container navigationToolbar = BoxLayout.encloseY(back, 
                 BorderLayout.centerCenterEastWest(from, null, fromSelected), 
                 BorderLayout.centerCenterEastWest(to, null, toSelected)
@@ -240,7 +275,17 @@ public class MapForm extends Form {
             g1.fillRect(x, y, 2, toSelected.getAbsoluteY() - y + toSelected.getHeight() / 2 - circle.getHeight() / 2);
         });
         
+        cc.addCompletionListener(e -> {
+            if(to.getCurrentLocation() != null) {
+                SearchService.directions(from.getCurrentLocation(), to.getCurrentLocation(), 
+                        (path, duration, distance) -> {
+                    enterNavigationMode(pinLayer, navigationToolbar, layer, path, from.getText(), to.getText(), duration); 
+                });
+            }
+        });
+
         back.addActionListener(e -> {
+            pinLayer.removeAll();
             navigationToolbar.setY(-navigationToolbar.getHeight());
             if(layer.getComponentCount() > 1) {
                 // the second component is the to navigation bar
@@ -251,50 +296,112 @@ public class MapForm extends Form {
                     revalidate();
             });
         });
-        layer.setLayout(new BorderLayout());
         layer.add(NORTH, navigationToolbar);
         navigationToolbar.setWidth(getDisplayWidth());
         navigationToolbar.setHeight(getPreferredH());
         navigationToolbar.setY(-navigationToolbar.getHeight());
-        layer.animateLayout(200);
+        getAnimationManager().addAnimation(layer.createAnimateLayout(200), 
+                    () -> cc.showCompletionBar(layer));
     }
     
-    private void showToNavigationBar(Container parentLayer) {
-        MultiButton addHome = new MultiButton("Add Home");
-        addHome.setUIID("Container");
-        addHome.setUIIDLine1("WhereToButtonLine1");
-        addHome.setIconUIID("WhereToButtonIcon");
-        FontImage.setMaterialIcon(addHome, FontImage.MATERIAL_HOME);
-        MultiButton addWork = new MultiButton("Add Work");
-        addWork.setUIID("Container");
-        addWork.setUIIDLine1("WhereToButtonLine1");
-        addWork.setIconUIID("WhereToButtonIcon");
-        FontImage.setMaterialIcon(addWork, FontImage.MATERIAL_WORK);
-        MultiButton savedPlaces = new MultiButton("Saved Places");
-        savedPlaces.setUIID("Container");
-        savedPlaces.setUIIDLine1("WhereToButtonLineNoBorder");
-        savedPlaces.setEmblemUIID("WhereToButtonLineNoBorder");
-        savedPlaces.setIconUIID("WhereToButtonIcon");
-        savedPlaces.setEmblem(FontImage.createMaterial(FontImage.MATERIAL_NAVIGATE_NEXT, savedPlaces.getIconComponent().getUnselectedStyle()));
-        FontImage.setMaterialIcon(savedPlaces, FontImage.MATERIAL_STAR_BORDER);
-        
-        Label whereSeparator = new Label("", "WhereSeparator");
-        whereSeparator.setShowEvenIfBlank(true);
-        
-        MultiButton history1 = new MultiButton("Mikve Yisrael Str...");
-        history1.setUIID("Container");
-        history1.setUIIDLine1("WhereToButtonLine1");
-        history1.setIconUIID("WhereToButtonIcon");
-        FontImage.setMaterialIcon(history1, FontImage.MATERIAL_HISTORY);
-        
-        Container result = BoxLayout.encloseY(addHome, addWork, savedPlaces, whereSeparator, history1);
-        result.setUIID("Form");
-        result.setScrollableY(true);
-        result.setScrollVisible(false);
-        result.setY(getDisplayHeight());
-        result.setWidth(getDisplayWidth());
-        result.setHeight(result.getPreferredH());
-        parentLayer.add(CENTER, result);
-        parentLayer.animateLayout(200);
-    } 
+    private Component createNavigationTag(String location, int durationMinutes) {
+        Label locationLabel = new Label(location, "NavigationLabel");
+        if(durationMinutes > 0) {
+            Label duration = new Label("" + durationMinutes, "NavigationMinuteLabel");
+            Label min = new Label("MIN", "NavigationMinuteDescLabel");
+            Container west = BoxLayout.encloseY(duration, min);
+            Container result = BorderLayout.centerEastWest(locationLabel, 
+                                                                    null, west);
+            result.getUnselectedStyle().setBorder(BlackAndWhiteBorder.create().
+                    blackLinePosition(west.getPreferredW()));
+            return result;
+        }
+        locationLabel.getUnselectedStyle().setBorder(BlackAndWhiteBorder.create());
+        return locationLabel;
+    }
+    
+    private boolean inNavigationMode;
+    private void enterNavigationMode(final Container pinLayer, Container navigationToolbar, 
+            final Container layer, List<Coord> path, String from, String to, int duration) {
+        pinLayer.removeAll();
+        navigationToolbar.setY(-navigationToolbar.getHeight());
+        if(layer.getComponentCount() > 1) {
+            layer.getComponentAt(1).setY(getDisplayHeight());
+        }
+        navigationToolbar.getParent().animateUnlayout(200, 120, () -> {
+            if(inNavigationMode) {
+                return;
+            }
+            inNavigationMode = true;
+            callSerially(() -> {
+                layer.removeAll();
+
+                Coord[] pathCoords = new Coord[path.size()];
+                path.toArray(pathCoords);
+                MapContainer.MapObject pathObject = mc.addPath(pathCoords);
+
+                Component fromComponent = createNavigationTag(from.substring(0, from.indexOf(',')), duration / 60);
+                Component toComponent = createNavigationTag(to.substring(0, to.indexOf(',')), -1);
+
+                MapLayout.setHorizontalAlignment(fromComponent, MapLayout.HALIGN.RIGHT);
+                mapLayer.add(pathCoords[0], fromComponent);
+                mapLayer.add(pathCoords[pathCoords.length - 1], toComponent);
+
+                whereTo.setVisible(false);
+                getToolbar().setVisible(false);
+
+                Button back = new Button("", "TitleCommand");
+                FontImage.setMaterialIcon(back, FontImage.MATERIAL_ARROW_BACK);
+                layer.add(NORTH, back);
+                back.addActionListener(e -> 
+                    exitNavigationMode(layer, fromComponent, toComponent, pathObject));
+
+                Label ride = new Label("Ride", "RideTitle");
+                Label taxi = new Label("Taxi", Resources.getGlobalResources().getImage("ride.png"), "RideTitle");
+                taxi.setTextPosition(BOTTOM);
+
+                Label separator = new Label("", "MarginSeparator");
+                separator.setShowEvenIfBlank(true);
+                Button blackButton = new Button("Confirm", "BlackButton");
+                Container cnt = BoxLayout.encloseY(ride, taxi, separator, blackButton);
+                cnt.setUIID("Form");
+                layer.add(SOUTH, cnt);
+                revalidate();
+                blackButton.addActionListener(e -> {
+                    exitNavigationMode(layer, fromComponent, toComponent, pathObject);
+                    
+                    Label searching = new Label("Finding your ride",
+                            Resources.getGlobalResources().getImage("searching-cab-icon.png"),
+                            "SearchingDialog");
+                    pinLayer.add(SOUTH, searching);
+                    pinLayer.getUnselectedStyle().setBgColor(0);
+                    pinLayer.getUnselectedStyle().setBgTransparency(120);
+                    pinLayer.add(CENTER, new BlinkDot());
+                    LocationService.hailRide(from, to, car -> {
+                        pinLayer.getUnselectedStyle().setBgTransparency(0);
+                        pinLayer.removeAll();
+                    });
+                });
+            });
+        });
+    }
+
+    private void exitNavigationMode(final Container layer, Component fromComponent, Component toComponent, MapContainer.MapObject pathObject) {
+        layer.removeAll();
+        fromComponent.remove();
+        toComponent.remove();
+        mc.removeMapObject(pathObject);
+        getToolbar().setVisible(true);
+        whereTo.setVisible(true);
+        revalidate();
+        inNavigationMode = false;
+    }
+    
+    private void addMapListener(MapListener ml) {
+        if(lastMapListener != null) {
+            mc.removeMapListener(lastMapListener);
+        }
+        lastMapListener = ml;
+        mc.addMapListener(ml);
+    }
 }
