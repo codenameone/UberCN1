@@ -35,6 +35,7 @@ import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.googlemaps.MapContainer;
 import com.codename1.location.Location;
+import com.codename1.maps.BoundingBox;
 import com.codename1.maps.Coord;
 import com.codename1.maps.MapListener;
 import static com.codename1.ui.CN.*;
@@ -141,7 +142,7 @@ public class MapForm extends Form {
                     mapLayer.animateLayout(100);
                 }
             });
-        }, loc ->  mc.zoom(new Coord(loc.getLatitude(), loc.getLongitude()), 16));
+        }, loc ->  mc.fitBounds(new BoundingBox(new Coord(loc.getLatitude(), loc.getLongitude()), 0.009044, 0.0089831)));
         
         add(mapLayer);
         
@@ -339,7 +340,11 @@ public class MapForm extends Form {
                 Coord[] pathCoords = new Coord[path.size()];
                 path.toArray(pathCoords);
                 MapContainer.MapObject pathObject = mc.addPath(pathCoords);
-
+                BoundingBox bb = BoundingBox.create(pathCoords).
+                        extend(new BoundingBox(pathCoords[0], 0.01, 0.01)).
+                        extend(new BoundingBox(pathCoords[pathCoords.length - 1], 0.01, 0.01));
+                mc.fitBounds(bb);
+                
                 Component fromComponent = createNavigationTag(from.substring(0, from.indexOf(',')), duration / 60);
                 Component toComponent = createNavigationTag(to.substring(0, to.indexOf(',')), -1);
 

@@ -23,6 +23,7 @@
 
 package com.codename1.apps.uberclone.server;
 
+import static com.codename1.apps.uberclone.server.Globals.*;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.Util;
 import com.codename1.io.rest.Rest;
@@ -56,7 +57,7 @@ public class SearchService {
         }
         lastLocationRequest = Rest.get("https://maps.googleapis.com/maps/api/geocode/json").
                 queryParam("latlng", l.getLatitude() + "," + l.getLongitude()).
-                queryParam("key", Globals.GOOGLE_GEOCODING_KEY).
+                queryParam("key", GOOGLE_GEOCODING_KEY).
                 queryParam("language", "en").
                 queryParam("result_type", "street_address|point_of_interest").
                 getAsJsonMap(callbackMap -> {
@@ -66,25 +67,6 @@ public class SearchService {
                         if(results != null && results.size() > 0) {
                             Map firstResult = (Map)results.get(0);
                             name.onSucess((String)firstResult.get("formatted_address"));
-                        }
-                    }
-                });
-    }
-
-    public static void findLocation(String name, SuccessCallback<Coord> location) {
-        Rest.get("https://maps.googleapis.com/maps/api/geocode/json").
-                queryParam("address", name).
-                queryParam("key", Globals.GOOGLE_GEOCODING_KEY).
-                getAsJsonMap(callbackMap -> {
-                    Map data = callbackMap.getResponseData();
-                    if(data != null) {
-                        List results = (List)data.get("results");
-                        if(results != null && results.size() > 0) {
-                            Map firstResult = (Map)results.get(0);
-                            Map locationMap = (Map)firstResult.get("geometry");
-                            double lat = Util.toDoubleValue(locationMap.get("lat"));
-                            double lon = Util.toDoubleValue(locationMap.get("lng"));
-                            location.onSucess(new Coord(lat, lon));
                         }
                     }
                 });
@@ -99,7 +81,7 @@ public class SearchService {
                 queryParam("origin", l.getLatitude() + "," + l.getLongitude()).
                 queryParam("destination", destination.getLatitude() + "," + destination.getLongitude()).
                 queryParam("mode", "driving").
-                queryParam("key", Globals.GOOGLE_DIRECTIONS_KEY).
+                queryParam("key", GOOGLE_DIRECTIONS_KEY).
                 getAsJsonMap(callbackMap -> {
                     Map data = callbackMap.getResponseData();
                     if(data != null) {
@@ -184,7 +166,7 @@ public class SearchService {
         public void getLocation(SuccessCallback<Location> result) {
             Rest.get("https://maps.googleapis.com/maps/api/place/details/json").
                 queryParam("placeid", placeId).
-                queryParam("key", Globals.GOOGLE_PLACES_KEY).
+                queryParam("key", GOOGLE_PLACES_KEY).
                 getAsJsonMap(callbackMap -> {
                     Map r = (Map)callbackMap.getResponseData().get("result");
                     Map geomMap = (Map)r.get("geometry");
@@ -216,7 +198,7 @@ public class SearchService {
                 queryParam("input", input).
                 queryParam("location", l.getLatitude() + "," + l.getLongitude()).
                 queryParam("radius", "50000").
-                queryParam("key", Globals.GOOGLE_PLACES_KEY).
+                queryParam("key", GOOGLE_PLACES_KEY).
                 getAsJsonMap(callbackMap -> {
                     Map data = callbackMap.getResponseData();
                     if(data != null) {
