@@ -27,11 +27,9 @@ import com.codename1.ui.Component;
 import com.codename1.ui.Display;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
-import com.codename1.ui.Stroke;
 import com.codename1.ui.geom.GeneralPath;
 import com.codename1.ui.geom.Rectangle;
 import com.codename1.ui.plaf.Border;
-import com.codename1.ui.plaf.RoundRectBorder;
 
 /**
  *
@@ -196,5 +194,4 @@ public class BlackAndWhiteBorder extends Border {
     public boolean isBackgroundPainter() {
         return true;
     }
-
 }

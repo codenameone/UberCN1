@@ -27,17 +27,13 @@ import com.codename1.apps.uberclone.server.LocationService;
 import com.codename1.apps.uberclone.server.SearchService;
 import com.codename1.components.MultiButton;
 import static com.codename1.ui.CN.*;
-import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
-import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.EventDispatcher;
 
 /**
@@ -45,19 +41,11 @@ import com.codename1.ui.util.EventDispatcher;
  * @author Shai Almog
  */
 public class CompletionContainer {
-    private final Container layers;
     private Container result;
     private boolean completionUsed;
-    private EventDispatcher dispatcher = new EventDispatcher();
-    
-    public CompletionContainer(Container layers) {
-        this.layers = layers;
-    }
+    private final EventDispatcher dispatcher = new EventDispatcher();
 
     void updateCompletion(String text, AutoCompleteAddressInput dest) {
-        if(dest.getClientProperty("LOCKED") != null) {
-            return;
-        }
         SearchService.suggestLocations(text, LocationService.getCurrentLocation(), resultList -> {
             if(resultList != null && resultList.size() > 0) {
                 result.removeAll();
@@ -66,9 +54,7 @@ public class CompletionContainer {
                     MultiButton mb = createEntry(FontImage.MATERIAL_PLACE, r.getMainText(), r.getSecondaryText());
                     result.add(mb);
                     mb.addActionListener(e -> {
-                        dest.putClientProperty("LOCKED", Boolean.TRUE);
-                        dest.setText(r.getFullText());
-                        dest.putClientProperty("LOCKED", null);
+                        dest.setTextNoEvent(r.getFullText());
                         r.getLocation(l -> {
                             dest.setCurrentLocation(l);
                             dispatcher.fireActionEvent(e);
@@ -79,35 +65,7 @@ public class CompletionContainer {
             }
         });
     }
-    
-    void foldCompletion() {
-        Component cmp = layers.getComponentAt(1);
-        if(layers.getLayout().getComponentConstraint(cmp).equals(SOUTH)) {
-            return;
-        }
-        cmp.remove();
-        cmp.setUIID(cmp.getUIID());
-        layers.add(SOUTH, cmp);
-        cmp.setPreferredSize(new Dimension(getDisplayWidth(), getDisplayHeight() / 8));
-        Style s = cmp.getUnselectedStyle();
-        s.setMarginUnit(Style.UNIT_TYPE_DIPS);
-        s.setMarginLeft(3);
-        s.setMarginRight(3);
-        layers.animateLayout(200);
-    }
-    
-    void expandCompletion() {
-        Component cmp = layers.getComponentAt(1);
-        if(!layers.getLayout().getComponentConstraint(cmp).equals(SOUTH)) {
-            return;
-        }
-        cmp.remove();
-        cmp.setUIID(cmp.getUIID());
-        layers.add(CENTER, cmp);
-        cmp.setPreferredSize(null);
-        layers.animateLayout(200);        
-    }
-    
+        
     private MultiButton createEntry(char icon, String title) {
         MultiButton b = new MultiButton(title);
         b.setUIID("Container");
@@ -179,5 +137,4 @@ public class CompletionContainer {
     public void removeCompletionListener(ActionListener<ActionEvent> a) {
         dispatcher.removeListener(a);
     }
-    
 }
