@@ -47,17 +47,15 @@ public class AutoCompleteAddressInput extends TextField {
     private boolean dragStarted;
     private CompletionContainer completion;
     private ActionListener<ActionEvent> dragListener, releaseListener;
-    private MapContainer parentMap;
     private Location currentLocation;
     
     private boolean blockChangeEvent;
     
     public AutoCompleteAddressInput(String value, String hint, Container layers, 
-            CompletionContainer completion, MapContainer parentMap) {
+            CompletionContainer completion) {
         super(value, hint, 40, TextField.ANY);
         this.completion = completion;
         this.layers = layers;
-        this.parentMap = parentMap;
         getHintLabel().setUIID("FromToTextFieldHint");
         setUIID("FromToTextField");
         addDataChangedListener((i, ii) -> {
