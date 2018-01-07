@@ -9,6 +9,8 @@ import com.codename1.ui.Container;
 import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.geom.Point;
 import com.codename1.ui.layouts.Layout;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A constraint based layout that positions components relatively to the position of a Map
@@ -24,10 +26,10 @@ public class MapLayout extends Layout implements MapListener {
         private final Container actual;
         private boolean inUpdate;
         private Runnable nextUpdate;        
+        private int updateCounter;
 
         public static enum HALIGN {
             LEFT {
-
                 @Override
                 int convert(int x, int width) {
                     return x;
@@ -142,10 +144,24 @@ public class MapLayout extends Layout implements MapListener {
                 public void run() {
                     inUpdate = true;
                     try {
-                        for (int iter = 0 ; iter < actual.getComponentCount() ; iter++) {
-                            Component current = actual.getComponentAt(iter);
+                        List<Coord> coords = new ArrayList<>();
+                        List<Component> cmps = new ArrayList<>();
+                        int len = actual.getComponentCount();
+                        for (Component current : actual) {
                             Coord crd = (Coord) current.getClientProperty(COORD_KEY);
-                            Point p = map.getScreenCoordinate(crd);
+                            coords.add(crd);
+                            cmps.add(current);
+                        }
+                        int startingUpdateCounter = ++updateCounter;
+                        List<Point> points = map.getScreenCoordinates(coords);
+                        if (startingUpdateCounter != updateCounter || len != points.size()) {
+                            // Another update must have run while we were waiting for the bounding box.
+                            // in which case, that update would be more recent than this one.
+                            return;
+                        }
+                        for (int i=0; i<len; i++) {
+                            Component current = cmps.get(i);
+                            Point p = points.get(i);
                             current.putClientProperty(POINT_KEY, p);
                         }
                         actual.setShouldCalcPreferredSize(true);
