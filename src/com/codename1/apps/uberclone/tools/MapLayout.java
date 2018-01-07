@@ -30,22 +30,12 @@ public class MapLayout extends Layout implements MapListener {
 
         public static enum HALIGN {
             LEFT {
-                @Override
-                int convert(int x, int width) {
-                    return x;
-                }
+                int convert(int x, int width) { return x; }
             },
             CENTER {
-                @Override
-                int convert(int x, int width) {
-                    return x - width / 2;
-                }
+                int convert(int x, int width) { return x - width / 2; }
             }, 
-            RIGHT {
-                @Override
-                int convert(int x, int width) {
-                    return x - width;
-                }
+            RIGHT { int convert(int x, int width) { return x - width; }
             };
             
             abstract int convert(int x, int width);
@@ -53,22 +43,13 @@ public class MapLayout extends Layout implements MapListener {
 
         public static enum VALIGN {
             TOP {
-                @Override
-                int convert(int y, int height) {
-                    return y;
-                }
+                int convert(int y, int height) { return y; }
             }, 
             MIDDLE {
-                @Override
-                int convert(int y, int height) {
-                    return y + height / 2;
-                }
+                int convert(int y, int height) { return y + height / 2; }
             }, 
             BOTTOM {
-                @Override
-                int convert(int y, int height) {
-                    return y + height;
-                }
+                int convert(int y, int height) { return y + height; }
             };
 
             abstract int convert(int y, int height);

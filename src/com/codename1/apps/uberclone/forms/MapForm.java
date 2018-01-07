@@ -82,6 +82,7 @@ public class MapForm extends Form {
     private UITimer lastTimer;
     private Button whereTo;
     private Container mapLayer;
+    private boolean inNavigationMode;
     
     public static MapForm get() {
         if(instance == null) {
@@ -194,7 +195,7 @@ public class MapForm extends Form {
         Button back = new Button("", "TitleCommand");
         FontImage.setMaterialIcon(back, FontImage.MATERIAL_ARROW_BACK);
 
-        CompletionContainer cc = new CompletionContainer(layer);
+        CompletionContainer cc = new CompletionContainer();
         AutoCompleteAddressInput from = new AutoCompleteAddressInput("Current Location", "From", layer, cc);
         AutoCompleteAddressInput to = new AutoCompleteAddressInput("", "Where To?", layer, cc);
         from.setCurrentLocation(LocationService.getCurrentLocation());
@@ -260,7 +261,7 @@ public class MapForm extends Form {
             g1.setAlpha(255);
             g1.setColor(0xffffff);
             if(dropShadow != null) {
-                if(layer.getComponentCount() > 1) {
+                if(((BorderLayout)layer.getLayout()).getCenter() != null) {
                     g1.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
                 } 
                 g1.drawImage(dropShadow, rect.getX() - shadowHeight, rect.getY() + rect.getHeight() - dropShadow.getHeight() / 4 * 3);
@@ -288,10 +289,7 @@ public class MapForm extends Form {
         back.addActionListener(e -> {
             pinLayer.removeAll();
             navigationToolbar.setY(-navigationToolbar.getHeight());
-            if(layer.getComponentCount() > 1) {
-                // the second component is the to navigation bar
-                layer.getComponentAt(1).setY(getDisplayHeight());
-            }
+            layer.getComponentAt(1).setY(getDisplayHeight());
             navigationToolbar.getParent().animateUnlayout(200, 120, () -> {
                     layer.removeAll();
                     revalidate();
@@ -321,14 +319,11 @@ public class MapForm extends Form {
         return locationLabel;
     }
     
-    private boolean inNavigationMode;
     private void enterNavigationMode(final Container pinLayer, Container navigationToolbar, 
             final Container layer, List<Coord> path, String from, String to, int duration) {
         pinLayer.removeAll();
         navigationToolbar.setY(-navigationToolbar.getHeight());
-        if(layer.getComponentCount() > 1) {
-            layer.getComponentAt(1).setY(getDisplayHeight());
-        }
+        layer.getComponentAt(1).setY(getDisplayHeight());
         navigationToolbar.getParent().animateUnlayout(200, 120, () -> {
             if(inNavigationMode) {
                 return;
