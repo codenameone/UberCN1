@@ -195,8 +195,8 @@ public class MapForm extends Form {
         FontImage.setMaterialIcon(back, FontImage.MATERIAL_ARROW_BACK);
 
         CompletionContainer cc = new CompletionContainer(layer);
-        AutoCompleteAddressInput from = new AutoCompleteAddressInput("Current Location", "From", layer, cc, mc);
-        AutoCompleteAddressInput to = new AutoCompleteAddressInput("", "Where To?", layer, cc, mc);
+        AutoCompleteAddressInput from = new AutoCompleteAddressInput("Current Location", "From", layer, cc);
+        AutoCompleteAddressInput to = new AutoCompleteAddressInput("", "Where To?", layer, cc);
         from.setCurrentLocation(LocationService.getCurrentLocation());
                 
         Image circle = Image.createImage(square.getWidth(), square.getHeight(), 0);
