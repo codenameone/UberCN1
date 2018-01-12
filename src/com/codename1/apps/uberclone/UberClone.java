@@ -37,15 +37,9 @@ public class UberClone {
     public void init(Object context) {
         driverMode = driverMode();
         NetworkManager.getInstance().updateThreadCount(2);
-
         theme = UIManager.initFirstTheme("/theme");
-
-        // Enable Toolbar on all Forms by default
         Toolbar.setGlobalToolbar(true);
-
-        // Pro only feature
         Log.bindCrashProtection(true);
-        
         Display.getInstance().lockOrientation(true);
     }
     

@@ -271,6 +271,12 @@
         <val key="SquareLogo.padUnit" value="2,2,2,2" />
         <val key="SquareLogo.padding" value="2.0,2.0,2.0,2.0" />
         <val key="SquareLogo.transparency" value="255" />
+        <val key="Star.fgColor" value="ffff00" />
+        <font key="Star.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
+        <val key="Star.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="Star.padUnit" value="2,2,2,2" />
+        <val key="Star.padding" value="3.0,3.0,1.0,1.0" />
+        <val key="Star.transparency" value="0" />
         <border key="TextField.border" type="underline"  millimeters="false" thickness="2.0" color="0" />
         <val key="TextField.fgColor" value="0" />
         <font key="TextField.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />

@@ -220,5 +220,24 @@ public class SearchService {
                 });
     }
 
+    public static void findLocation(String name, SuccessCallback<Coord> location) {
+        Rest.get("https://maps.googleapis.com/maps/api/geocode/json").
+                queryParam("address", name).
+                queryParam("key", Globals.GOOGLE_GEOCODING_KEY).
+                getAsJsonMap(callbackMap -> {
+                    Map data = callbackMap.getResponseData();
+                    if(data != null) {
+                        List results = (List)data.get("results");
+                        if(results != null && results.size() > 0) {
+                            Map firstResult = (Map)results.get(0);
+                            Map geometryMap = (Map)firstResult.get("geometry");
+                            Map locationMap = (Map)geometryMap.get("location");
+                            double lat = Util.toDoubleValue(locationMap.get("lat"));
+                            double lon = Util.toDoubleValue(locationMap.get("lng"));
+                            location.onSucess(new Coord(lat, lon));
+                        }
+                    }
+                });
+    }    
 }
 

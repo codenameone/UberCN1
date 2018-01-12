@@ -23,6 +23,9 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import com.codename1.apps.uberclone.dataobj.Ride;
+import com.codename1.apps.uberclone.dataobj.User;
+import com.codename1.apps.uberclone.server.DriverService;
 import com.codename1.apps.uberclone.server.LocationService;
 import com.codename1.apps.uberclone.server.SearchService;
 import com.codename1.apps.uberclone.tools.AutoCompleteAddressInput;
@@ -31,8 +34,12 @@ import com.codename1.apps.uberclone.tools.BlinkDot;
 import com.codename1.apps.uberclone.tools.CompletionContainer;
 import com.codename1.apps.uberclone.tools.MapLayout;
 import com.codename1.components.FloatingActionButton;
+import com.codename1.components.InfiniteProgress;
+import com.codename1.components.InteractionDialog;
 import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.components.SpanLabel;
+import com.codename1.components.ToastBar;
 import com.codename1.googlemaps.MapContainer;
 import com.codename1.location.Location;
 import com.codename1.maps.BoundingBox;
@@ -319,6 +326,148 @@ public class MapForm extends Form {
         return locationLabel;
     }
     
+    public void showRide(long userId) {
+        InteractionDialog id = new InteractionDialog(new BorderLayout());
+        id.setTitle("Loading Ride Details");
+        id.add(CENTER, new InfiniteProgress());
+        id.show(getHeight() - id.getPreferredH(), 0, 0, 0);
+        DriverService.fetchRideDetails(userId, ride -> {
+            id.setTitle("Building Ride Path");
+            final Coord[] locations = new Coord[2];
+            
+            if(ride.from.get() == null) {
+                id.dispose();
+                ToastBar.showErrorMessage("Ride no longer available...");
+                return;
+            }
+            
+            SearchService.findLocation(ride.from.get(), fromLocation -> {
+                locations[0] = fromLocation;
+                onShowRideResponse(id, ride, locations);
+            });
+            SearchService.findLocation(ride.destination.get(), toLocation -> {
+                locations[1] = toLocation;
+                onShowRideResponse(id, ride, locations);
+            });
+        });
+    }
+    
+    private Location toLocation(Coord crd) {
+        return new Location(crd.getLatitude(), crd.getLongitude());
+    }
+    
+    public void pickUpPassenger(MapContainer.MapObject pathObject, 
+            Ride ride,
+            Component fromComponent, Component toComponent) {
+        InteractionDialog id = new InteractionDialog("Pick Up", BoxLayout.y());
+        id.add(new Label(ride.name.get(), "RideTitle"));
+        Button acceptButton = new Button("Picked Up", "BlackButton");
+        Button cancelButton = new Button("Cancel", "BlackButton");
+        id.add(acceptButton);
+        id.add(cancelButton);
+        
+        acceptButton.addActionListener(e -> {
+            DriverService.startRide();
+            id.dispose();
+            InteractionDialog dlg = new InteractionDialog("Driving...", BoxLayout.y());
+            dlg.add(new Label(ride.name.get(), "RideTitle"));
+            Button finishButton = new Button("Finished Ride", "BlackButton");
+            dlg.add(finishButton);
+            
+            finishButton.addActionListener(ee -> {
+                DriverService.finishRide();
+                fromComponent.remove();
+                toComponent.remove();
+                mc.removeMapObject(pathObject);
+                dlg.dispose();
+            });
+            dlg.show(getHeight() - dlg.getPreferredH(), 0, 0, 0);
+        });
+        
+        cancelButton.addActionListener(e -> {
+            fromComponent.remove();
+            toComponent.remove();
+            mc.removeMapObject(pathObject);
+            id.dispose();
+        });
+        id.show(getHeight() - id.getPreferredH(), 0, 0, 0);
+    }
+    
+    void onShowRideResponse(InteractionDialog dlg, Ride ride, Coord[] locations) {
+        if(locations[0] == null || locations[1] == null) {
+            return;
+        }
+        
+        SearchService.directions(toLocation(locations[0]), toLocation(locations[1]), 
+                (path, duration, distance) -> {
+            dlg.dispose();
+            String from = ride.from.get();
+            String to = ride.destination.get();
+            Component fromComponent = createNavigationTag(from.substring(0, from.indexOf(',')), duration / 60);
+            Component toComponent = createNavigationTag(to.substring(0, to.indexOf(',')), -1);
+            MapContainer.MapObject pathObject = addPath(path, fromComponent, toComponent, duration);
+            
+            InteractionDialog id = new InteractionDialog("Ride", BoxLayout.y());
+            id.add(new Label(ride.name.get(), "RideTitle"));
+            Button acceptButton = new Button("Accept", "BlackButton");
+            Button cancelButton = new Button("Cancel", "BlackButton");
+            id.setAnimateShow(false);
+            id.add(acceptButton);
+            id.add(cancelButton);
+            
+            cancelButton.addActionListener(e -> {
+                fromComponent.remove();
+                toComponent.remove();
+                mc.removeMapObject(pathObject);
+                id.dispose();
+            });
+            
+            acceptButton.addActionListener(e -> {
+                boolean accept = DriverService.acceptRide(ride.userId.getLong());
+                callSerially(() -> {
+                    if(accept) {
+                        id.dispose();
+                        pickUpPassenger(pathObject, ride, fromComponent, toComponent);
+                    } else {
+                        id.dispose();
+                        fromComponent.remove();
+                        toComponent.remove();
+                        mc.removeMapObject(pathObject);
+                        getAnimationManager().flushAnimation(() -> ToastBar.showErrorMessage("Failed to grab ride"));
+                    }
+                });
+            });
+            
+            id.show(getHeight() - id.getPreferredH(), 0, 0, 0);
+        });    
+    }
+    
+    private MapContainer.MapObject addPath(List<Coord> path, Component fromComponent, Component toComponent, int duration) {
+        Coord[] pathCoords = new Coord[path.size()];
+        path.toArray(pathCoords);
+        MapContainer.MapObject pathObject = mc.addPath(pathCoords);
+        BoundingBox bb = BoundingBox.create(pathCoords).
+                extend(new BoundingBox(pathCoords[0], 0.01, 0.01)).
+                extend(new BoundingBox(pathCoords[pathCoords.length - 1], 0.01, 0.01));
+        mc.fitBounds(bb);
+
+        MapLayout.setHorizontalAlignment(fromComponent, MapLayout.HALIGN.RIGHT);
+        mapLayer.add(pathCoords[0], fromComponent);
+        mapLayer.add(pathCoords[pathCoords.length - 1], toComponent);
+        return pathObject;
+    }
+    
+    private String trimmedString(String str) {
+        int p = str.indexOf(',');
+        if(p > -1) {
+            str = str.substring(0, p);
+        } 
+        if(str.length() > 15) {
+            str = str.substring(0, 15);
+        }
+        return str;
+    }
+    
     private void enterNavigationMode(final Container pinLayer, Container navigationToolbar, 
             final Container layer, List<Coord> path, String from, String to, int duration) {
         pinLayer.removeAll();
@@ -332,20 +481,9 @@ public class MapForm extends Form {
             callSerially(() -> {
                 layer.removeAll();
 
-                Coord[] pathCoords = new Coord[path.size()];
-                path.toArray(pathCoords);
-                MapContainer.MapObject pathObject = mc.addPath(pathCoords);
-                BoundingBox bb = BoundingBox.create(pathCoords).
-                        extend(new BoundingBox(pathCoords[0], 0.01, 0.01)).
-                        extend(new BoundingBox(pathCoords[pathCoords.length - 1], 0.01, 0.01));
-                mc.fitBounds(bb);
-                
-                Component fromComponent = createNavigationTag(from.substring(0, from.indexOf(',')), duration / 60);
-                Component toComponent = createNavigationTag(to.substring(0, to.indexOf(',')), -1);
-
-                MapLayout.setHorizontalAlignment(fromComponent, MapLayout.HALIGN.RIGHT);
-                mapLayer.add(pathCoords[0], fromComponent);
-                mapLayer.add(pathCoords[pathCoords.length - 1], toComponent);
+                Component fromComponent = createNavigationTag(trimmedString(from), duration / 60);
+                Component toComponent = createNavigationTag(trimmedString(to), -1);
+                MapContainer.MapObject pathObject = addPath(path, fromComponent, toComponent, duration);
 
                 whereTo.setVisible(false);
                 getToolbar().setVisible(false);
@@ -378,11 +516,44 @@ public class MapForm extends Form {
                     pinLayer.getUnselectedStyle().setBgTransparency(120);
                     pinLayer.add(CENTER, new BlinkDot());
                     LocationService.hailRide(from, to, car -> {
-                        pinLayer.getUnselectedStyle().setBgTransparency(0);
-                        pinLayer.removeAll();
+                        hailRideImpl(car, pinLayer);
                     });
                 });
             });
+        });
+    }
+
+    private void hailRideImpl(User car, final Container pinLayer) {
+        pinLayer.getUnselectedStyle().setBgTransparency(0);
+        pinLayer.removeAll();
+        String driverName = car.givenName.get();
+        String carBrand = car.car.get();
+        
+        SpanLabel driver = new SpanLabel("Driver found " + driverName + "\n" + carBrand);
+        Container stars = new Container(new FlowLayout(CENTER));
+        for(int iter = 0 ; iter < 5 ; iter++) {
+            if(iter + 1 >= car.currentRating.getFloat()) {
+                Label fullStar = new Label("", "Star");
+                FontImage.setMaterialIcon(fullStar, FontImage.MATERIAL_STAR);
+                stars.add(fullStar);
+            } else {
+                if(iter + 1 >= Math.round(car.currentRating.getFloat())) {
+                    Label halfStar = new Label("", "Star");
+                    FontImage.setMaterialIcon(halfStar, FontImage.MATERIAL_STAR_HALF);
+                    stars.add(halfStar);
+                } else {
+                    break;
+                }
+            }
+        }
+        Button ok = new Button("OK", "BlackButton");
+        Container dialog = BoxLayout.encloseY(driver, stars, ok);
+        dialog.setUIID("SearchingDialog");
+        pinLayer.add(SOUTH, dialog);
+        revalidate();
+        ok.addActionListener(ee -> {
+            dialog.remove();
+            revalidate();
         });
     }
 

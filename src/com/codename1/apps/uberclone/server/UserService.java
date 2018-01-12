@@ -23,6 +23,7 @@
 
 package com.codename1.apps.uberclone.server;
 
+import com.codename1.apps.uberclone.UberClone;
 import com.codename1.apps.uberclone.dataobj.User;
 import com.codename1.io.Preferences;
 import com.codename1.io.rest.Response;
@@ -35,6 +36,9 @@ import com.codename1.util.SuccessCallback;
 import java.util.Map;
 import java.util.Random;
 import static com.codename1.apps.uberclone.server.Globals.*;
+import com.codename1.io.Log;
+import static com.codename1.ui.CN.*;
+import com.codename1.ui.Display;
 
 /**
  * A generic service class that handles login/creation etc.
@@ -48,17 +52,36 @@ public class UserService {
         return me;
     }
     
+    public static String getToken() {
+        if(UberClone.isDriverMode()) {
+            return Preferences.get("driver-token", null);
+        } else {
+            return Preferences.get("token", null);
+        }
+    }
+    
     public static void loadUser() {
         me = new User();
-        PreferencesObject.create(me).bind();        
+        if(UberClone.isDriverMode()) {
+            PreferencesObject.create(me).setPrefix("driver").bind();        
+        } else {
+            PreferencesObject.create(me).bind();        
+        }
+        if(Display.getInstance().isSimulator()) {
+            Log.p("User details: " + me.getPropertyIndex().toString());
+        }
     }
     
     public static void logout() {
-        Preferences.set("token", null);
+        if(UberClone.isDriverMode()) {
+            Preferences.set("driver-token", null);
+        } else {
+            Preferences.set("token", null);
+        }
     }
     
     public static boolean isLoggedIn() {
-        return Preferences.get("token", null) != null;
+        return getToken() != null;
     }
     
     public static void sendSMSActivationCode(String phoneNumber) {
@@ -70,7 +93,9 @@ public class UserService {
             val += r.nextInt(10);
         }
         Preferences.set("phoneVerification", val);
-        
+        if(Display.getInstance().isSimulator()) {
+            Log.p("Debug verification code: " + val);
+        }
         tw.sendSmsAsync(phoneNumber, val);
     }
     
@@ -95,6 +120,20 @@ public class UserService {
         return false;
     }
     
+    public static void registerPushToken(String pushToken) {
+        Rest.get(SERVER_URL + "user/setPushToken").
+                queryParam("token", getToken()).
+                queryParam("pushToken", pushToken).getAsStringAsync(new Callback<Response<String>>() {
+            @Override
+            public void onSucess(Response<String> value) {
+            }
+
+            @Override
+            public void onError(Object sender, Throwable err, int errorCode, String errorMessage) {
+            }
+        });
+    }
+    
     public static boolean addNewUser(User u) {
         Response<String> token = Rest.post(SERVER_URL + "user/add").
                 jsonContent().
@@ -102,7 +141,12 @@ public class UserService {
         if(token.getResponseCode() != 200) {
             return false;
         }
-        Preferences.set("token", token.getResponseData());
+        if(UberClone.isDriverMode()) {
+            Preferences.set("driver-token", token.getResponseData());
+            registerPush();
+        } else {
+            Preferences.set("token", token.getResponseData());
+        }
         return true;
     }
     
@@ -116,8 +160,13 @@ public class UserService {
             public void onSucess(Response<Map> value) {
                 me = new User();
                 me.getPropertyIndex().populateFromMap(value.getResponseData());
-                Preferences.set("token", me.authToken.get());
-                PreferencesObject.create(me).bind();
+                if(UberClone.isDriverMode()) {
+                    Preferences.set("driver-token", me.authToken.get());
+                    PreferencesObject.create(me).setPrefix("driver").bind();
+                } else {
+                    Preferences.set("token", me.authToken.get());
+                    PreferencesObject.create(me).bind();
+                }
                 onSuccess.onSucess(me);
             }
 

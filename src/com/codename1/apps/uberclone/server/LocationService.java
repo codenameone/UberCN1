@@ -136,7 +136,7 @@ public class LocationService {
                 double lt = lastKnownLocation.getLatitude();
                 double ll = lastKnownLocation.getLongitude();
                 float dir = lastKnownLocation.getDirection();
-                if(ll == lon && lt == lat && dir == direction) {
+                if(ll == lon && lt == lat && dir == direction && hailing == HAILING_OFF) {
                     // no need to do an update
                     return;
                 }
@@ -154,7 +154,7 @@ public class LocationService {
                     DataOutputStream dos = new DataOutputStream(bos);) {
                     
                     dos.writeShort(MESSAGE_TYPE_LOCATION_UPDATE);
-                    String token = Preferences.get("token", null);
+                    String token = UserService.getToken();
                     dos.writeShort(token.length());
                     for(int iter = 0 ; iter < token.length() ; iter++) {
                         dos.writeByte((byte)token.charAt(iter));
@@ -210,11 +210,16 @@ public class LocationService {
                 if(response == MESSAGE_TYPE_DRIVER_FOUND) {
                     driverId = dis.readLong();
                     User u = cars.get(driverId);
+                    if(u == null) {
+                        u = new User().id.set(driverId);
+                        cars.put(driverId, u);
+                    }
                     u.car.set(dis.readUTF()).
                             givenName.set(dis.readUTF()).
                             surname.set(dis.readUTF()).
                             currentRating.set(dis.readFloat());
-                    callSerially(() -> driverFound.carAdded(u));
+                    final User finalUser = u;
+                    callSerially(() -> driverFound.carAdded(finalUser));
                     return;
                 }
                 
