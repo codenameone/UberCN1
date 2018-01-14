@@ -24,7 +24,7 @@
         <val key="AvatarBlock.transparency" value="255" />
         <val key="BlackButton.align" value="4" />
         <val key="BlackButton.bgColor" value="0" />
-        <border key="BlackButton.border" type="roundRect" strokeColor="0" strokeOpacity="255" strokeThickness="0.0" strokeMM="false" shadowSpread="10.0" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.0" bezierCorners="false" />
+        <border key="BlackButton.border" type="roundRect" strokeColor="0" strokeOpacity="255" strokeThickness="0.0" strokeMM="false" shadowSpread="10.0" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="false" cornerRadius="0.2" bezierCorners="false" />
         <val key="BlackButton.dis#derive" value="BlackButton" />
         <val key="BlackButton.fgColor" value="ffffff" />
         <font key="BlackButton.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
@@ -225,7 +225,7 @@
         <val key="RideTitle.padding" value="4.0,4.0,4.0,4.0" />
         <val key="RideTitle.transparency" value="0" />
         <val key="SearchingDialog.bgColor" value="ffffff" />
-        <border key="SearchingDialog.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="10.0" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="true" CornerRadius="1.5" bezierCorners="false" />
+        <border key="SearchingDialog.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="10.0" shadowOpacity="0" shadowX="0.5" shadowY="0.5" shadowBlur="10.0" topOnlyMode="false" bottomOnlyMode="true" cornerRadius="1.5" bezierCorners="false" />
         <val key="SearchingDialog.fgColor" value="000000" />
         <font key="SearchingDialog.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.2" />
         <val key="SearchingDialog.marUnit" value="2,2,2,2" />
@@ -357,7 +357,7 @@
         <val key="WhereSeparator.padding" value="0.0,2.0,2.0,2.0" />
         <val key="WhereSeparator.transparency" value="255" />
         <val key="WhereTo.bgColor" value="ffffff" />
-        <border key="WhereTo.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="4.0" shadowOpacity="70" shadowX="0.5" shadowY="0.5" shadowBlur="4.0" topOnlyMode="false" bottomOnlyMode="false" CornerRadius="0.0" bezierCorners="false" />
+        <border key="WhereTo.border" type="roundRect" strokeColor="0" strokeOpacity="0" strokeThickness="0.0" strokeMM="false" shadowSpread="4.0" shadowOpacity="70" shadowX="0.5" shadowY="0.5" shadowBlur="4.0" topOnlyMode="false" bottomOnlyMode="false" cornerRadius="0.2" bezierCorners="false" />
         <val key="WhereTo.fgColor" value="535861" />
         <font key="WhereTo.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.2" />
         <val key="WhereTo.marUnit" value="2,2,2,2" />
