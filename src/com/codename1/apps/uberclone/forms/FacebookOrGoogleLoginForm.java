@@ -23,6 +23,12 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import com.codename1.apps.uberclone.UberClone;
+import com.codename1.components.ToastBar;
+import com.codename1.social.FacebookConnect;
+import com.codename1.social.GoogleConnect;
+import com.codename1.social.Login;
+import com.codename1.social.LoginCallback;
 import com.codename1.ui.Button;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Form;
@@ -44,5 +50,56 @@ public class FacebookOrGoogleLoginForm extends Form {
         Button facebook = new Button("Facebook", Resources.getGlobalResources().getImage("facebook.png"), "FlagButton");
         Button google = new Button("Google", Resources.getGlobalResources().getImage("google.png"), "FlagButton");
         add(facebook).add(google);
+        
+        facebook.addActionListener(e -> {
+            final Login fb = FacebookConnect.getInstance();
+            if(UberClone.isDriverMode()) {
+                fb.setClientId("value for driver app");
+                fb.setClientSecret("value for driver app");
+            } else {
+                fb.setClientId("553107538387162");
+                fb.setClientSecret("52a222738959bca26d7e75d6922112bd");
+            }
+            fb.setRedirectURI("https://www.codenameone.com/");
+            fb.setCallback(new LoginCallback() {
+                @Override
+                public void loginFailed(String errorMessage) {
+                    ToastBar.showErrorMessage("Login failed: " + errorMessage);
+                }
+
+                @Override
+                public void loginSuccessful() {                    
+                    String token = fb.getAccessToken().getToken();
+                    new EnterPasswordForm(null, token, null).show();
+                }
+            });
+            fb.doLogin();
+        });
+        
+        google.addActionListener(e -> {
+                Login gc = GoogleConnect.getInstance();
+                if(UberClone.isDriverMode()) {
+                    gc.setClientId("value for driver app");
+                    gc.setClientSecret("value for driver app");
+                } else {
+                    gc.setClientId("68244973020-vtfq38sfpbuappmarboh3s5jb2gent4b.apps.googleusercontent.com");
+                    gc.setClientSecret("he6Bt0yljUNiD-qbwpj6SPon");
+                }
+                gc.setRedirectURI("https://www.codenameone.com/login");
+                GoogleConnect.getInstance().setCallback(new LoginCallback() {
+                @Override
+                public void loginFailed(String errorMessage) {
+                    ToastBar.showErrorMessage("Login failed: " + errorMessage);
+                }
+
+                @Override
+                public void loginSuccessful() {                    
+                    String token = GoogleConnect.getInstance().getAccessToken().getToken();
+                    new EnterPasswordForm(null, null, token).show();
+                }
+            });
+            GoogleConnect.getInstance().doLogin();
+        });
     }
+    
 }

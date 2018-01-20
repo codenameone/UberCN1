@@ -27,6 +27,7 @@ import com.codename1.apps.uberclone.dataobj.Ride;
 import com.codename1.apps.uberclone.dataobj.User;
 import com.codename1.apps.uberclone.server.DriverService;
 import com.codename1.apps.uberclone.server.LocationService;
+import com.codename1.apps.uberclone.server.PaymentService;
 import com.codename1.apps.uberclone.server.SearchService;
 import com.codename1.apps.uberclone.tools.AutoCompleteAddressInput;
 import com.codename1.apps.uberclone.tools.BlackAndWhiteBorder;
@@ -546,14 +547,20 @@ public class MapForm extends Form {
                 }
             }
         }
-        Button ok = new Button("OK", "BlackButton");
-        Container dialog = BoxLayout.encloseY(driver, stars, ok);
+        Button ok = new Button("Pay With Cash", "BlackButton");
+        Button pay = new Button("Pay With Credit", "BlackButton");
+        Container dialog = BoxLayout.encloseY(driver, stars, ok, pay);
         dialog.setUIID("SearchingDialog");
         pinLayer.add(SOUTH, dialog);
         revalidate();
         ok.addActionListener(ee -> {
             dialog.remove();
             revalidate();
+        });
+        pay.addActionListener(ee -> {
+            dialog.remove();
+            revalidate();
+            PaymentService.sendPaymentAuthorization("" + car.currentRide.getLong());
         });
     }
 

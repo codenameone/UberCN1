@@ -50,13 +50,13 @@ import com.codename1.util.SuccessCallback;
  * @author Shai Almog
  */
 public class EnterPasswordForm extends Form {
-    public EnterPasswordForm(String phone) {
+    public EnterPasswordForm(String phoneNumber, String facebookId, String googleId) {
         super(new BorderLayout());
         Form previous = getCurrentForm();
         
         InfiniteProgress ip = new InfiniteProgress();
         Dialog dlg = ip.showInifiniteBlocking();
-        boolean exists = UserService.userExists(phone);
+        boolean exists = UserService.userExists(phoneNumber, facebookId, googleId);
         dlg.dispose();
         
         getToolbar().setBackCommand("", Toolbar.BackCommandPolicy.AS_ARROW, e -> previous.showBack());
@@ -90,7 +90,7 @@ public class EnterPasswordForm extends Form {
             Dialog ipDlg = new InfiniteProgress().showInifiniteBlocking();
             
             if(exists) {
-                UserService.loginWithPhone(phone, password.getText(), (value) -> {
+                UserService.login(phoneNumber, facebookId, googleId, password.getText(), (value) -> {
                     MapForm.get().show();
                 }, (sender, err, errorCode, errorMessage) -> {
                     ipDlg.dispose();
@@ -100,7 +100,9 @@ public class EnterPasswordForm extends Form {
                 });
             } else {                
                 if(UserService.addNewUser(new User().
-                        phone.set(phone).
+                        phone.set(phoneNumber).
+                        facebookId.set(facebookId).
+                        googleId.set(googleId).
                         password.set(password.getText()).
                         driver.set(UberClone.isDriverMode()))) {
                     MapForm.get().show();

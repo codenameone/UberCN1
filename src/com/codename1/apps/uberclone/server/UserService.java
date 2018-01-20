@@ -108,18 +108,40 @@ public class UserService {
         String val = Preferences.get("phoneVerification", null);
         return code.indexOf(val) > -1 && code.length() < 80;
     }
+
+    public static boolean userExists(String phoneNumber, String facebookId, String googleId) {
+        if(phoneNumber != null) {
+            return userExistsPhone(phoneNumber);
+        }
+        if(facebookId != null) {
+            return userExistsFacebook(facebookId);
+        }
+        return userExistsGoogle(googleId);
+    }
     
-    public static boolean userExists(String phoneNumber) {
-        Response<byte[]> b = Rest.get(SERVER_URL + "user/exists").
+    public static boolean userExistsPhone(String phoneNumber) {
+        return userExistsImpl("user/exists", phoneNumber);
+    }
+
+    public static boolean userExistsFacebook(String phoneNumber) {
+        return userExistsImpl("user/existsFacebook", phoneNumber);
+    }
+
+    public static boolean userExistsGoogle(String phoneNumber) {
+        return userExistsImpl("user/existsGoogle", phoneNumber);
+    }
+
+    private static boolean userExistsImpl(String url, String val) {
+        Response<byte[]> b = Rest.get(SERVER_URL + url).
                 acceptJson().
-                queryParam("phone", phoneNumber).getAsBytes();
+                queryParam("v", val).getAsBytes();
         if(b.getResponseCode() == 200) {
             // the t from true
             return b.getResponseData()[0] == (byte)'t';
         }
         return false;
     }
-    
+
     public static void registerPushToken(String pushToken) {
         Rest.get(SERVER_URL + "user/setPushToken").
                 queryParam("token", getToken()).
@@ -150,11 +172,13 @@ public class UserService {
         return true;
     }
     
-    public static void loginWithPhone(String phoneNumber, String password, final SuccessCallback<User> onSuccess, final FailureCallback<Object> onError) {
+    public static void login(String phoneNumber, String facebookId, String googleId, String password, final SuccessCallback<User> onSuccess, final FailureCallback<Object> onError) {
         Rest.get(SERVER_URL + "user/login").
                 acceptJson().
                 queryParam("password", password).
                 queryParam("phone", phoneNumber).
+                queryParam("facebookId", facebookId).
+                queryParam("googleId", googleId).
                 getAsJsonMapAsync(new Callback<Response<Map>>() {
             @Override
             public void onSucess(Response<Map> value) {

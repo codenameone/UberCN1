@@ -53,10 +53,11 @@ public class User implements PropertyBusinessObject {
     public final Property<String, User> authToken = new Property<>("authToken");
     public final Property<String, User> password = new Property<>("password");
     public final Property<String, User> pushToken = new Property<>("pushToken");
+    public final LongProperty<User> currentRide = new LongProperty<>("currentRide");
 
     private final PropertyIndex idx = new PropertyIndex(this, "User", id, givenName, 
             surname, phone, email, facebookId, googleId, driver, car, currentRating,
-            latitude, longitude, direction, authToken, password, pushToken);
+            latitude, longitude, direction, authToken, password, pushToken, currentRide);
     
     @Override
     public PropertyIndex getPropertyIndex() {

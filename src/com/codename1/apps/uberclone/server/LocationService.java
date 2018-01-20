@@ -217,7 +217,8 @@ public class LocationService {
                     u.car.set(dis.readUTF()).
                             givenName.set(dis.readUTF()).
                             surname.set(dis.readUTF()).
-                            currentRating.set(dis.readFloat());
+                            currentRating.set(dis.readFloat()).
+                            currentRide.set(dis.readLong());
                     final User finalUser = u;
                     callSerially(() -> driverFound.carAdded(finalUser));
                     return;

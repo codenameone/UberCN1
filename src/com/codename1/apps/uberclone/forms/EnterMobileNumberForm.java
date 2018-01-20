@@ -83,7 +83,7 @@ public class EnterMobileNumberForm extends Form {
                 if(SMSInterceptor.isSupported()) {
                     SMSInterceptor.grabNextSMS(s -> {
                         if(UserService.validateSMSActivationCode(s)) {
-                            new EnterPasswordForm(phone).show();
+                            new EnterPasswordForm(phone, null, null).show();
                             ToastBar.showMessage("Automatically Validated Phone Number!", FontImage.MATERIAL_THUMB_UP);
                         }
                     });

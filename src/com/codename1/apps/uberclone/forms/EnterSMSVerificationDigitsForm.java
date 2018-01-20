@@ -89,7 +89,7 @@ public class EnterSMSVerificationDigitsForm extends Form {
                 repaint();
                 return;
             }
-            new EnterPasswordForm(phone).show();
+            new EnterPasswordForm(phone, null, null).show();
         });
     }
 
