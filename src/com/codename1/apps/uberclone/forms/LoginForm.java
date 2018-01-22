@@ -128,32 +128,14 @@ public class LoginForm extends Form {
 
     class LoginFormPainter implements Painter, Animation {
         private double angle;
-        private final GeneralPath gp = new GeneralPath();
+        private double lastAngle;
+        private GeneralPath gp;
         private final Component parentCmp;
         private int counter;
+        private Image buffer;
         
         public LoginFormPainter(Component parentCmp) {
             this.parentCmp = parentCmp;
-            int x;
-            int y;
-            int w = Display.getInstance().convertToPixels(10);
-            int h = w;
-            int x0 = getX() - getWidth();
-            int xn = getX() + 2 * getWidth();
-            int y0 = getY() - getHeight();
-            int yn = getY() + 2 * getHeight();
-            for (int offset : new int[]{0, w/2}) {
-                x = x0 +offset;
-                y = y0 + offset;
-                while (x < xn) {
-                    while (y < yn) {
-                        drawShape(gp, x, y, w, h);
-                        y += h;
-                    }
-                    x += w;
-                    y = y0 + offset;
-                }
-            }            
             registerAnimated(this);
         }
 
@@ -176,23 +158,51 @@ public class LoginForm extends Form {
         
         @Override
         public void paint(Graphics g, Rectangle rect) {
-            g.setAlpha(255);
-            g.setColor(0x128f96);
-            g.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-            g.setColor(0xffffff);
-            g.setAlpha(72);
-            g.setAntiAliased(true);
-            g.rotate((float)(Math.PI/4f + Math.toRadians(angle % 360)), getX() + getWidth()/2, getY() + getHeight()/2);
-            g.drawShape(gp, new Stroke(1.5f, Stroke.CAP_SQUARE, Stroke.JOIN_BEVEL, 1f));
-            g.resetAffine();
-            g.setAlpha(255);
+            if(buffer == null || buffer.getWidth() != rect.getWidth()) {
+                buffer = Image.createImage(rect.getWidth(), rect.getHeight());                
+            }
+            if(lastAngle != angle) {
+                gp = new GeneralPath();
+                int x;
+                int y;
+                int w = Display.getInstance().convertToPixels(10);
+                int h = w;
+                int x0 = getX() - getWidth();
+                int xn = getX() + 2 * getWidth();
+                int y0 = getY() - getHeight();
+                int yn = getY() + 2 * getHeight();
+                for (int offset : new int[]{0, w/2}) {
+                    x = x0 +offset;
+                    y = y0 + offset;
+                    while (x < xn) {
+                        while (y < yn) {
+                            drawShape(gp, x, y, w, h);
+                            y += h;
+                        }
+                        x += w;
+                        y = y0 + offset;
+                    }
+                }            
+                lastAngle = angle;
+                Graphics ig = buffer.getGraphics();
+                ig.setAlpha(255);
+                ig.setColor(0x128f96);
+                ig.fillRect(0, 0, rect.getWidth(), rect.getHeight());
+                ig.setColor(0xffffff);
+                ig.setAlpha(72);
+                ig.setAntiAliased(true);
+                ig.rotate((float)(Math.PI/4f + Math.toRadians(angle % 360)), getX() + getWidth()/2, getY() + getHeight()/2);
+                ig.drawShape(gp, new Stroke(1.5f, Stroke.CAP_SQUARE, Stroke.JOIN_BEVEL, 1f));
+                ig.resetAffine();
+            }
+            g.drawImage(buffer, rect.getX(), rect.getY());
         }
 
         @Override
         public boolean animate() {
             counter++;
             if(counter % 2 == 0) {
-                angle += 0.1;
+                angle += 0.3;
                 parentCmp.repaint();
             }
             return false;

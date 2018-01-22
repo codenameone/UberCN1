@@ -49,12 +49,13 @@ public class UberClone {
             return;
         }
         
-        if(UserService.isLoggedIn()) {
+        /*if(UserService.isLoggedIn()) {
             UserService.loadUser();
             MapForm.get().show();
         } else {
             new LoginForm().show();
-        }
+        }*/
+        new LoginForm().show();
     }
 
     public void stop() {
