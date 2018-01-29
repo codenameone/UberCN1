@@ -36,7 +36,7 @@ import static com.codename1.apps.uberclone.server.Globals.*;
 import com.codename1.ui.animations.Motion;
 import com.codename1.ui.util.UITimer;
 import com.codename1.util.EasyThread;
-import com.codename1.util.LazyValue;
+import com.codename1.util.LazyValue; 
 import com.codename1.util.SuccessCallback;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

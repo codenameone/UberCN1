@@ -26,6 +26,7 @@ package com.codename1.apps.uberclone.forms;
 import com.codename1.apps.uberclone.UberClone;
 import com.codename1.apps.uberclone.dataobj.User;
 import com.codename1.apps.uberclone.server.UserService;
+import com.codename1.apps.uberclone.tools.FabProgress;
 import com.codename1.components.FloatingActionButton;
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
@@ -35,14 +36,10 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
-import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.plaf.Border;
-import com.codename1.util.FailureCallback;
-import com.codename1.util.SuccessCallback;
 
 /**
  * Implements the enter password form
@@ -87,13 +84,13 @@ public class EnterPasswordForm extends Form {
         fab.bindFabToContainer(this);
         
         fab.addActionListener(e -> {
-            Dialog ipDlg = new InfiniteProgress().showInifiniteBlocking();
+            FabProgress.bind(fab);
             
             if(exists) {
                 UserService.login(phoneNumber, facebookId, googleId, password.getText(), (value) -> {
-                    MapForm.get().show();
+                    password.stopEditing(() -> MapForm.get().show());
                 }, (sender, err, errorCode, errorMessage) -> {
-                    ipDlg.dispose();
+                    FabProgress.stop(fab);
                     error.setText("Login error");
                     error.setVisible(true);
                     revalidate();
@@ -107,7 +104,7 @@ public class EnterPasswordForm extends Form {
                         driver.set(UberClone.isDriverMode()))) {
                     MapForm.get().show();
                 } else {
-                    ipDlg.dispose();
+                    FabProgress.stop(fab);
                     error.setText("Signup error");
                     error.setVisible(true);
                     revalidate();

@@ -36,9 +36,15 @@ import com.codename1.util.SuccessCallback;
 import java.util.Map;
 import java.util.Random;
 import static com.codename1.apps.uberclone.server.Globals.*;
-import com.codename1.io.Log;
+import com.codename1.components.ToastBar;
+import com.codename1.io.ConnectionRequest;
+import com.codename1.io.Log; 
+import com.codename1.io.MultipartRequest;
+import com.codename1.io.NetworkManager;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Display;
+import com.codename1.ui.Image;
+import java.io.IOException;
 
 /**
  * A generic service class that handles login/creation etc.
@@ -93,8 +99,8 @@ public class UserService {
             val += r.nextInt(10);
         }
         Preferences.set("phoneVerification", val);
-        if(Display.getInstance().isSimulator()) {
-            Log.p("Debug verification code: " + val);
+        if(Display.getInstance().isSimulator() || DEBUG) {
+            Log.p("Debug verification code: " + val + " sent to phone " + phoneNumber);
         }
         tw.sendSmsAsync(phoneNumber, val);
     }
@@ -171,6 +177,20 @@ public class UserService {
         }
         return true;
     }
+
+    public static void editUser(User u) {
+        Rest.post(SERVER_URL + "user/add").
+                jsonContent().
+                body(u.getPropertyIndex().toJSON()).getAsStringAsync(new Callback<Response<String>>() {
+            @Override
+            public void onSucess(Response<String> value) {
+            }
+
+            @Override
+            public void onError(Object sender, Throwable err, int errorCode, String errorMessage) {
+            }
+        });
+    }
     
     public static void login(String phoneNumber, String facebookId, String googleId, String password, final SuccessCallback<User> onSuccess, final FailureCallback<Object> onError) {
         Rest.get(SERVER_URL + "user/login").
@@ -199,5 +219,28 @@ public class UserService {
                 onError.onError(null, err, errorCode, errorMessage);
             }
         });
+    }
+    
+    public static void fetchAvatar(SuccessCallback<Image> callback) {
+        fetchAvatar(me.id.getLong(), callback);
+    }
+    
+    public static void fetchAvatar(long id, SuccessCallback<Image> callback) {
+        ConnectionRequest cr = new ConnectionRequest(SERVER_URL + "user/avatar/" + id, false);
+        cr.setFailSilently(true);
+        cr.downloadImageToStorage("avatarImage-" + id, callback);
+    }
+    
+    
+    public static void setAvatar(String imageFile) {
+        try {
+            MultipartRequest mp = new MultipartRequest();
+            mp.setUrl(SERVER_URL + "user/updateAvatar/" + getToken());
+            mp.addData("img", imageFile, "image/jpeg");
+            addToQueue(mp);
+        } catch(IOException err) {
+            Log.e(err);
+            ToastBar.showErrorMessage("Error uploading avatar file: " + err);
+        }
     }
 }

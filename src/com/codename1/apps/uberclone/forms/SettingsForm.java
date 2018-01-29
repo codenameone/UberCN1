@@ -23,9 +23,15 @@
 
 package com.codename1.apps.uberclone.forms;
 
+import static com.codename1.apps.uberclone.forms.CommonCode.getAvatar;
+import com.codename1.apps.uberclone.server.UserService;
+import com.codename1.components.MultiButton;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Button;
+import com.codename1.ui.Dialog;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
+import com.codename1.ui.Label;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
 
@@ -39,8 +45,33 @@ public class SettingsForm extends Form {
         super(BoxLayout.y());
         CommonCode.initBlackTitleForm(this, "Account Settings", null);
         
+        Button userAndAvatar = new Button("Shai Almog", "Label");
+        userAndAvatar.setIcon(CommonCode.getAvatar(i -> userAndAvatar.setIcon(i)));
+        userAndAvatar.setGap(convertToPixels(3));
+        userAndAvatar.addActionListener(e -> new EditAccountForm().show());
+        
+        MultiButton addHome = CommonCode.createEntry(FontImage.MATERIAL_HOME, "Add Home");
+        MultiButton addWork = CommonCode.createEntry(FontImage.MATERIAL_WORK, "Add Work");
+
+        Button moreSavedPlaces = new Button("More Saved Places", "ConnectWithSocialButton");
+        
+        Button signOut = new Button("Sign Out", "Label");
+        
+        signOut.addActionListener(e -> {
+            if(Dialog.show("Sign Out", "Are you sure?", "Sign Out", "Cancel")) {
+                UserService.logout();
+                new LoginForm().show();
+            }
+        });
         
         
+        addAll(userAndAvatar, 
+                CommonCode.createSeparator(), 
+                new Label("Favorites"), 
+                addHome, 
+                addWork,
+                moreSavedPlaces, 
+                signOut);        
     }
 
     @Override

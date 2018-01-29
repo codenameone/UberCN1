@@ -27,17 +27,15 @@ import com.codename1.apps.uberclone.server.UserService;
 import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ToastBar;
 import com.codename1.sms.intercept.SMSInterceptor;
-import com.codename1.sms.twilio.TwilioSMS;
 import static com.codename1.ui.CN.*;
-import com.codename1.ui.Component;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.animations.MorphTransition;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Style;
 
 /**
@@ -49,12 +47,28 @@ public class EnterMobileNumberForm extends Form {
     public EnterMobileNumberForm() {
         super(BoxLayout.y());
         Form previous = getCurrentForm();
-        getToolbar().setBackCommand("", Toolbar.BackCommandPolicy.AS_ARROW, e -> previous.showBack());
+        TextField phoneNumber = new TextField("", "050-123-4567", 40, TextField.PHONENUMBER);
+        getToolbar().setBackCommand("", Toolbar.BackCommandPolicy.AS_ARROW, e -> {
+            MorphTransition morph = MorphTransition.create(400).
+                    morph("EnterMobileNumber").
+                    morph("CountryCodeButton");
+            setTransitionOutAnimator(morph);
+            if(phoneNumber.isEditing()) {
+                phoneNumber.stopEditing(() -> {
+                    revalidate();
+                    callSerially(() -> previous.showBack());
+                });
+            } else {
+                previous.showBack();
+            }
+        });
 
-        add(new Label("Enter your mobile number", "FlagButton"));
+        Label mobileNumber = new Label("Enter your mobile number", "FlagButton");
+        mobileNumber.setName("EnterMobileNumber");
+        add(mobileNumber);
         
         CountryCodePicker countryCodeButton = new CountryCodePicker();
-        TextField phoneNumber = new TextField("", "050-123-4567", 40, TextField.PHONENUMBER);
+        countryCodeButton.setName("CountryCodeButton");
         add(BorderLayout.centerEastWest(
                 phoneNumber, 
                 null, 

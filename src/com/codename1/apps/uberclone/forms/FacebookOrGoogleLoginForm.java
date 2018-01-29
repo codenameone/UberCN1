@@ -34,6 +34,7 @@ import static com.codename1.ui.CN.*;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.animations.CommonTransitions;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
 
@@ -45,6 +46,10 @@ public class FacebookOrGoogleLoginForm extends Form {
     public FacebookOrGoogleLoginForm() {
         super(BoxLayout.y());
         Form previous = getCurrentForm();
+        setTransitionInAnimator(CommonTransitions.createCover(CommonTransitions.SLIDE_VERTICAL, false, 300));
+        setTransitionOutAnimator(CommonTransitions.createUncover(CommonTransitions.SLIDE_VERTICAL, true, 300));        
+        CommonCode.removeTransitionsTemporarily(previous);
+
         getToolbar().setBackCommand("", Toolbar.BackCommandPolicy.AS_ARROW, e -> previous.showBack());
         add(new Label("Choose an account", "FlagButton"));
         Button facebook = new Button("Facebook", Resources.getGlobalResources().getImage("facebook.png"), "FlagButton");

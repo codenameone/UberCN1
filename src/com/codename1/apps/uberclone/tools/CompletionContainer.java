@@ -23,6 +23,7 @@
 
 package com.codename1.apps.uberclone.tools;
 
+import com.codename1.apps.uberclone.forms.CommonCode;
 import com.codename1.apps.uberclone.server.LocationService;
 import com.codename1.apps.uberclone.server.SearchService;
 import com.codename1.components.MultiButton;
@@ -51,7 +52,7 @@ public class CompletionContainer {
                 result.removeAll();
                 completionUsed = true;
                 for(SearchService.SuggestionResult r : resultList) {
-                    MultiButton mb = createEntry(FontImage.MATERIAL_PLACE, r.getMainText(), r.getSecondaryText());
+                    MultiButton mb = CommonCode.createEntry(FontImage.MATERIAL_PLACE, r.getMainText(), r.getSecondaryText());
                     result.add(mb);
                     mb.addActionListener(e -> {
                         dest.setTextNoEvent(r.getFullText());
@@ -66,25 +67,6 @@ public class CompletionContainer {
         });
     }
         
-    private MultiButton createEntry(char icon, String title) {
-        MultiButton b = new MultiButton(title);
-        b.setUIID("Container");
-        b.setUIIDLine1("WhereToButtonLine1");
-        b.setIconUIID("WhereToButtonIcon");
-        FontImage.setMaterialIcon(b, icon);
-        return b;
-    }
-    
-    private MultiButton createEntry(char icon, String title, String subtitle) {
-        MultiButton b = new MultiButton(title);
-        b.setTextLine2(subtitle);
-        b.setUIID("Container");
-        b.setUIIDLine1("WhereToButtonLineNoBorder");
-        b.setUIIDLine2("WhereToButtonLine2");
-        b.setIconUIID("WhereToButtonIcon");
-        FontImage.setMaterialIcon(b, icon);
-        return b;
-    }
     
     public void initCompletionBar() {
         if(!completionUsed) {
@@ -96,9 +78,9 @@ public class CompletionContainer {
     }
     
     private void initCompletionBarImpl() {
-        MultiButton addHome = createEntry(FontImage.MATERIAL_HOME, "Add Home");
-        MultiButton addWork = createEntry(FontImage.MATERIAL_WORK, "Add Work");
-        MultiButton savedPlaces = createEntry(FontImage.MATERIAL_NAVIGATE_NEXT, "Saved Places");
+        MultiButton addHome = CommonCode.createEntry(FontImage.MATERIAL_HOME, "Add Home");
+        MultiButton addWork = CommonCode.createEntry(FontImage.MATERIAL_WORK, "Add Work");
+        MultiButton savedPlaces = CommonCode.createEntry(FontImage.MATERIAL_NAVIGATE_NEXT, "Saved Places");
         savedPlaces.setUIIDLine1("WhereToButtonLineNoBorder");
         savedPlaces.setEmblemUIID("WhereToButtonLineNoBorder");
         savedPlaces.setEmblem(FontImage.createMaterial(FontImage.MATERIAL_NAVIGATE_NEXT, savedPlaces.getIconComponent().getUnselectedStyle()));
@@ -111,7 +93,7 @@ public class CompletionContainer {
     }
 
     private void addHistoryToCompletionBar() {
-        MultiButton history1 = createEntry(FontImage.MATERIAL_HISTORY, "Mikve Yisrael Str...");
+        MultiButton history1 = CommonCode.createEntry(FontImage.MATERIAL_HISTORY, "Mikve Yisrael Str...");
         result.add(history1);
     }
     

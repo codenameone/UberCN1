@@ -16,11 +16,14 @@
         <val key="AvatarBlock.align" value="1" />
         <val key="AvatarBlock.bgColor" value="0" />
         <border key="AvatarBlock.border" type="underline"  millimeters="false" thickness="2.0" color="5396320" />
+        <val key="AvatarBlock.dis#derive" value="AvatarBlock" />
         <val key="AvatarBlock.fgColor" value="ffffff" />
         <font key="AvatarBlock.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
         <val key="AvatarBlock.margin" value="0.0,0.0,0.0,0.0" />
         <val key="AvatarBlock.padUnit" value="2,2,2,2" />
         <val key="AvatarBlock.padding" value="4.0,4.0,4.0,4.0" />
+        <val key="AvatarBlock.press#derive" value="AvatarBlock" />
+        <val key="AvatarBlock.sel#derive" value="AvatarBlock" />
         <val key="AvatarBlock.transparency" value="255" />
         <val key="BlackButton.align" value="4" />
         <val key="BlackButton.bgColor" value="0" />
@@ -123,6 +126,12 @@
         <font key="GetMovingWithUber.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.8" />
         <val key="GetMovingWithUber.padUnit" value="2,2,2,2" />
         <val key="GetMovingWithUber.padding" value="4.0,3.0,4.0,4.0" />
+        <val key="GrayLabel.fgColor" value="666666" />
+        <font key="GrayLabel.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="GrayLabel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="GrayLabel.padUnit" value="2,2,2,2" />
+        <val key="GrayLabel.padding" value="4.0,0.0,4.0,4.0" />
+        <val key="GrayLabel.transparency" value="0" />
         <val key="History.bgColor" value="ffffff" />
         <val key="History.derive" value="FloatingActionButton" />
         <val key="History.fgColor" value="0" />

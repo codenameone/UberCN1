@@ -35,16 +35,14 @@ import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Painter;
 import com.codename1.ui.Stroke;
-import com.codename1.ui.TextArea;
-import com.codename1.ui.TextField;
 import com.codename1.ui.animations.Animation;
-import com.codename1.ui.events.FocusListener;
+import com.codename1.ui.animations.CommonTransitions;
+import com.codename1.ui.animations.MorphTransition;
 import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.geom.GeneralPath;
 import com.codename1.ui.geom.Rectangle;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.util.Effects;
 import com.codename1.ui.util.Resources;
@@ -99,6 +97,7 @@ public class LoginForm extends Form {
             }  
         };
         SpanButton phoneNumber = new SpanButton("Enter your mobile number", "PhoneNumberHint");
+        phoneNumber.setName("EnterMobileNumber");
         phoneNumber.getTextComponent().setColumns(80);
         phoneNumber.getTextComponent().setRows(2);
         phoneNumber.getTextComponent().setGrowByContent(false);
@@ -106,15 +105,21 @@ public class LoginForm extends Form {
         
         phoneNumber.addActionListener(e -> new EnterMobileNumberForm().show());
         
+        countryCodeButton.setName("CountryCodeButton");
         Container phonePicking = BorderLayout.centerCenterEastWest(
                             phoneNumber, 
                             null, countryCodeButton);
         phonePicking.setUIID("Separator");
         
         Button social = new Button("Or connect with social", "ConnectWithSocialButton");
+
+        MorphTransition morph = MorphTransition.create(400).
+                morph(phoneNumber.getName()).
+                morph(countryCodeButton.getName());
+        setTransitionOutAnimator(morph);
         social.addActionListener(e -> new FacebookOrGoogleLoginForm().show());
         
-        add(SOUTH, BoxLayout.encloseY(getMovingWithUber, phonePicking, social));
+        add(SOUTH, BoxLayout.encloseY(getMovingWithUber, phonePicking, social));        
     }
 
     @Override
@@ -128,7 +133,7 @@ public class LoginForm extends Form {
 
     class LoginFormPainter implements Painter, Animation {
         private double angle;
-        private double lastAngle;
+        private double lastAngle = -1;
         private GeneralPath gp;
         private final Component parentCmp;
         private int counter;
@@ -200,10 +205,12 @@ public class LoginForm extends Form {
 
         @Override
         public boolean animate() {
-            counter++;
-            if(counter % 2 == 0) {
-                angle += 0.3;
-                parentCmp.repaint();
+            if(!Display.getInstance().isInTransition()) {
+                counter++;
+                if(counter % 2 == 0) {
+                    angle += 0.3;
+                    parentCmp.repaint();
+                }
             }
             return false;
         }

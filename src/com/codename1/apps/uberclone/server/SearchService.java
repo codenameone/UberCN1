@@ -27,7 +27,7 @@ import static com.codename1.apps.uberclone.server.Globals.*;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.Util;
 import com.codename1.io.rest.Rest;
-import com.codename1.location.Location;
+import com.codename1.location.Location; 
 import com.codename1.maps.Coord;
 import static com.codename1.ui.CN.*;
 import com.codename1.util.SuccessCallback;

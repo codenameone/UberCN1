@@ -25,11 +25,9 @@ package com.codename1.apps.uberclone.forms;
 
 import com.codename1.apps.uberclone.server.UserService;
 import com.codename1.components.FloatingActionButton;
-import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Container;
-import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
