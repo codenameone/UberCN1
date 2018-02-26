@@ -96,7 +96,7 @@ public class LoginForm extends Form {
                 new EnterMobileNumberForm().show();
             }  
         };
-        SpanButton phoneNumber = new SpanButton("Enter your mobile number", "PhoneNumberHint");
+        SpanButton phoneNumber = new SpanButton("Enter your mobile\nnumber", "PhoneNumberHint");
         phoneNumber.setName("EnterMobileNumber");
         phoneNumber.getTextComponent().setColumns(80);
         phoneNumber.getTextComponent().setRows(2);
