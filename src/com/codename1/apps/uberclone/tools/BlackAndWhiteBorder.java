@@ -23,6 +23,7 @@
 
 package com.codename1.apps.uberclone.tools;
 
+import static com.codename1.ui.CN.*;
 import com.codename1.ui.Component;
 import com.codename1.ui.Display;
 import com.codename1.ui.Graphics;
@@ -120,20 +121,18 @@ public class BlackAndWhiteBorder extends Border {
         c.putClientProperty(CACHE_KEY, target);
 
         // update the cache with a more refined version and repaint
-        Display.getInstance().callSeriallyOnIdle(new Runnable() {
-            public void run() {
-                if(w == c.getWidth() && h == c.getHeight()) {
-                    Image target = createTargetImage(c, w, h, false);
-                    c.putClientProperty(CACHE_KEY, target);
-                    c.repaint();
-                }
+        callSeriallyOnIdle(() -> {
+            if (w == c.getWidth() && h == c.getHeight()) {
+                Image target1 = createTargetImage(c, w, h, false);
+                c.putClientProperty(CACHE_KEY, target1);
+                c.repaint();
             }
         });
     }
     
     private GeneralPath createShape(int shapeW, int shapeH) {
         GeneralPath gp = new GeneralPath();
-        float radius = Display.getInstance().convertToPixels(cornerRadius);
+        float radius = convertToPixels(cornerRadius);
         float x = 0;
         float y = 0;
         float widthF = shapeW;

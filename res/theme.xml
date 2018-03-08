@@ -246,12 +246,14 @@
         <val key="Separator.margin" value="0.0,0.0,0.0,0.0" />
         <val key="Separator.padding" value="0.0,2.0,0.0,0.0" />
         <val key="Separator.transparency" value="0" />
+        <border key="SideCommand.border" type="empty" />
         <val key="SideCommand.fgColor" value="0" />
         <font key="SideCommand.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="SideCommand.margin" value="0.0,0.0,0.0,0.0" />
         <val key="SideCommand.padUnit" value="2,2,2,2" />
         <val key="SideCommand.padding" value="4.0,1.0,3.0,3.0" />
         <val key="SideCommand.press#align" value="1" />
+        <border key="SideCommand.press#border" type="empty" />
         <val key="SideCommand.press#fgColor" value="0" />
         <font key="SideCommand.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
         <val key="SideCommand.press#margin" value="0.0,0.0,0.0,0.0" />
@@ -259,6 +261,7 @@
         <val key="SideCommand.press#padding" value="3.0,3.0,4.0,4.0" />
         <val key="SideCommand.press#transparency" value="0" />
         <val key="SideCommand.sel#align" value="1" />
+        <border key="SideCommand.sel#border" type="empty" />
         <val key="SideCommand.sel#fgColor" value="0" />
         <font key="SideCommand.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.0" />
         <val key="SideCommand.sel#margin" value="0.0,0.0,0.0,0.0" />

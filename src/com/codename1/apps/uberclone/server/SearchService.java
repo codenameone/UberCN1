@@ -26,6 +26,7 @@ package com.codename1.apps.uberclone.server;
 import static com.codename1.apps.uberclone.server.Globals.*;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.Util;
+import com.codename1.io.rest.Response;
 import com.codename1.io.rest.Rest;
 import com.codename1.location.Location; 
 import com.codename1.maps.Coord;
@@ -83,23 +84,26 @@ public class SearchService {
                 queryParam("mode", "driving").
                 queryParam("key", GOOGLE_DIRECTIONS_KEY).
                 getAsJsonMap(callbackMap -> {
-                    Map data = callbackMap.getResponseData();
-                    if(data != null) {
-                        List results = (List)data.get("routes");
-                        if(results != null && results.size() > 0) {
-                            Map firstResult = (Map)results.get(0);
-                            Map overview_polyline = (Map)firstResult.get("overview_polyline");
-                            List<Coord> polyline = decodePolyline((String)overview_polyline.get("points"));
-                            
-                            List legs = (List)firstResult.get("legs");
-                            Map firstLeg = (Map)legs.get(0);
-                            Map distance = (Map)firstLeg.get("distance");
-                            Map duration = (Map)firstLeg.get("duration");
-
-                            response.onDirectionResult(polyline, Util.toIntValue(duration.get("value")), (String)distance.get("text"));
-                        }
-                    }
+                    processDirections(callbackMap.getResponseData(), response);
                 });
+    }
+
+    private static void processDirections(Map data, DirectionResults response) {
+        if(data != null) {
+            List results = (List)data.get("routes");
+            if(results != null && results.size() > 0) {
+                Map firstResult = (Map)results.get(0);
+                Map overview_polyline = (Map)firstResult.get("overview_polyline");
+                List<Coord> polyline = decodePolyline((String)overview_polyline.get("points"));
+                
+                List legs = (List)firstResult.get("legs");
+                Map firstLeg = (Map)legs.get(0);
+                Map distance = (Map)firstLeg.get("distance");
+                Map duration = (Map)firstLeg.get("duration");
+                
+                response.onDirectionResult(polyline, Util.toIntValue(duration.get("value")), (String)distance.get("text"));
+            }
+        }
     }
 
     // Taken from https://github.com/scoutant/polyline-decoder/blob/master/src/main/java/org/scoutant/polyline/PolylineDecoder.java
@@ -200,24 +204,29 @@ public class SearchService {
                 queryParam("radius", "50000").
                 queryParam("key", GOOGLE_PLACES_KEY).
                 getAsJsonMap(callbackMap -> {
-                    Map data = callbackMap.getResponseData();
-                    if(data != null) {
-                        List<Map> results = (List<Map>)data.get("predictions");
-                        if(results != null && results.size() > 0) {
-                            ArrayList<SuggestionResult> resultSet = new ArrayList<>();
-                            for(Map currentResult : results) {
-                                Map structured_formatting = (Map)currentResult.get("structured_formatting");
-                                String mainText = (String)structured_formatting.get("main_text");
-                                String secondaryText = (String)structured_formatting.get("secondary_text");
-                                String description = (String)currentResult.get("description");
-                                String placeId = (String)currentResult.get("place_id");
-                                resultSet.add(new SuggestionResult(mainText, secondaryText, description, placeId));
-                            }
-                            locationCache.put(input, resultSet);
-                            resultList.onSucess(resultSet);
-                        }
-                    }
+                    processSuggestionResponse(callbackMap.getResponseData(), 
+                            input, resultList);
                 });
+    }
+
+    private static void processSuggestionResponse(Map data, String input, 
+            SuccessCallback<List<SuggestionResult>> resultList) {
+        if(data != null) {
+            List<Map> results = (List<Map>)data.get("predictions");
+            if(results != null && results.size() > 0) {
+                ArrayList<SuggestionResult> resultSet = new ArrayList<>();
+                for(Map currentResult : results) {
+                    Map structured_formatting = (Map)currentResult.get("structured_formatting");
+                    String mainText = (String)structured_formatting.get("main_text");
+                    String secondaryText = (String)structured_formatting.get("secondary_text");
+                    String description = (String)currentResult.get("description");
+                    String placeId = (String)currentResult.get("place_id");
+                    resultSet.add(new SuggestionResult(mainText, secondaryText, description, placeId));
+                }
+                locationCache.put(input, resultSet);
+                resultList.onSucess(resultSet);
+            }
+        }
     }
 
     public static void findLocation(String name, SuccessCallback<Coord> location) {

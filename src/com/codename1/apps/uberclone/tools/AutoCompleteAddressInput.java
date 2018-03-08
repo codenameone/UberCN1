@@ -94,66 +94,74 @@ public class AutoCompleteAddressInput extends TextField {
         super.initComponent();
         if(dragListener == null) {
             dragListener = e -> {
-                Component cmp = layers.getComponentAt(1);
-                boolean dragUp = layers.getLayout().getComponentConstraint(cmp).equals(SOUTH);
-                if(dragStarted) {
-                    e.consume();
-                    cmp.getUnselectedStyle().setMarginUnit(Style.UNIT_TYPE_PIXELS);
-                    if(dragUp) {
-                        cmp.setPreferredSize(new Dimension(getDisplayWidth(), firstY - e.getY() + getDisplayHeight() / 8));
-                    } else {
-                        cmp.getUnselectedStyle().setMarginTop(Math.max(0, e.getY() - firstY));
-                    }
-                    layers.revalidate();
-                } else {
-                    Component draggedCmp = getComponentForm().getComponentAt(e.getX(), e.getY());
-                    if(!draggedCmp.isChildOf((Container)cmp)) {
-                        return;
-                    }
-                    
-                    if(firstX == -1) {
-                        firstX = e.getX();
-                        firstY = e.getY();
-                    }
-                    if((!dragUp && e.getY() - firstY > convertToPixels(2)) ||
-                            (dragUp && firstY - e.getY() > convertToPixels(2))) {
-                        e.consume();
-                        dragStarted = true;
-                    }
-                }
+                processDragEvent(e);
             };
             getComponentForm().addPointerDraggedListener(dragListener);
             releaseListener = e -> {
-                if(dragStarted) {
-                    e.consume();
-                    Component cmp = layers.getComponentAt(1);
-                    boolean dragUp = layers.getLayout().getComponentConstraint(cmp).equals(SOUTH);
-                    cmp.remove();
-                    cmp.setUIID(cmp.getUIID());
-                    boolean animateDown;
-                    if(dragUp) {
-                        animateDown = !(firstY - e.getY() > convertToPixels(8));
-                    } else {
-                        animateDown = e.getY() - firstY > convertToPixels(8);
-                    }
-                    if(animateDown) {
-                        layers.add(SOUTH, cmp);
-                        cmp.setPreferredSize(new Dimension(getDisplayWidth(), getDisplayHeight() / 8));
-                        Style s = cmp.getUnselectedStyle();
-                        s.setMarginUnit(Style.UNIT_TYPE_DIPS);
-                        s.setMarginLeft(3);
-                        s.setMarginRight(3);
-                    } else {
-                        layers.add(CENTER, cmp);
-                        cmp.setPreferredSize(null);
-                    }
-                    layers.animateLayout(200);
-                    firstX = -1; 
-                    firstY = -1;
-                    dragStarted = false;
-                }
+                processReleaseEvent(e);
             };
             getComponentForm().addPointerReleasedListener(releaseListener);
+        }
+    }
+
+    private void processReleaseEvent(ActionEvent e) {
+        if(dragStarted) {
+            e.consume();
+            Component cmp = layers.getComponentAt(1);
+            boolean dragUp = layers.getLayout().getComponentConstraint(cmp).equals(SOUTH);
+            cmp.remove();
+            cmp.setUIID(cmp.getUIID());
+            boolean animateDown;
+            if(dragUp) {
+                animateDown = !(firstY - e.getY() > convertToPixels(8));
+            } else {
+                animateDown = e.getY() - firstY > convertToPixels(8);
+            }
+            if(animateDown) {
+                layers.add(SOUTH, cmp);
+                cmp.setPreferredSize(new Dimension(getDisplayWidth(), getDisplayHeight() / 8));
+                Style s = cmp.getUnselectedStyle();
+                s.setMarginUnit(Style.UNIT_TYPE_DIPS);
+                s.setMarginLeft(3);
+                s.setMarginRight(3);
+            } else {
+                layers.add(CENTER, cmp);
+                cmp.setPreferredSize(null);
+            }
+            layers.animateLayout(200);
+            firstX = -1;
+            firstY = -1;
+            dragStarted = false;
+        }
+    }
+
+    private void processDragEvent(ActionEvent e) {
+        Component cmp = layers.getComponentAt(1);
+        boolean dragUp = layers.getLayout().getComponentConstraint(cmp).equals(SOUTH);
+        if(dragStarted) {
+            e.consume();
+            cmp.getUnselectedStyle().setMarginUnit(Style.UNIT_TYPE_PIXELS);
+            if(dragUp) {
+                cmp.setPreferredSize(new Dimension(getDisplayWidth(), firstY - e.getY() + getDisplayHeight() / 8));
+            } else {
+                cmp.getUnselectedStyle().setMarginTop(Math.max(0, e.getY() - firstY));
+            }
+            layers.revalidate();
+        } else {
+            Component draggedCmp = getComponentForm().getComponentAt(e.getX(), e.getY());
+            if(!draggedCmp.isChildOf((Container)cmp)) {
+                return;
+            }
+            
+            if(firstX == -1) {
+                firstX = e.getX();
+                firstY = e.getY();
+            }
+            if((!dragUp && e.getY() - firstY > convertToPixels(2)) ||
+                    (dragUp && firstY - e.getY() > convertToPixels(2))) {
+                e.consume();
+                dragStarted = true;
+            }
         }
     }
 
