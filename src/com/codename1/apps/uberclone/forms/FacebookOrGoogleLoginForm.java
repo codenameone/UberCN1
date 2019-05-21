@@ -25,6 +25,8 @@ package com.codename1.apps.uberclone.forms;
 
 import com.codename1.apps.uberclone.UberClone;
 import com.codename1.components.ToastBar;
+import com.codename1.io.rest.Response;
+import com.codename1.io.rest.Rest;
 import com.codename1.social.FacebookConnect;
 import com.codename1.social.GoogleConnect;
 import com.codename1.social.Login;
@@ -37,6 +39,7 @@ import com.codename1.ui.Toolbar;
 import com.codename1.ui.animations.CommonTransitions;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.util.Resources;
+import java.util.Map;
 
 /**
  *
@@ -75,7 +78,11 @@ public class FacebookOrGoogleLoginForm extends Form {
                 @Override
                 public void loginSuccessful() {                    
                     String token = fb.getAccessToken().getToken();
-                    new EnterPasswordForm(null, token, null).show();
+                    Response<Map> resp = Rest.get("https://graph.facebook.com/v2.12/me").
+                            queryParam("access_token", token).
+                            acceptJson().getAsJsonMap();
+                    String userId = (String)resp.getResponseData().get("id");
+                    new EnterPasswordForm(null, userId, null).show();
                 }
             });
             fb.doLogin();
@@ -100,7 +107,11 @@ public class FacebookOrGoogleLoginForm extends Form {
                 @Override
                 public void loginSuccessful() {                    
                     String token = GoogleConnect.getInstance().getAccessToken().getToken();
-                    new EnterPasswordForm(null, null, token).show();
+                    Response<Map> resp = Rest.get("https://www.googleapis.com/plus/v1/people/me").
+                            header("Authorization", "Bearer " + token).
+                            acceptJson().getAsJsonMap();
+                    String userId = (String)resp.getResponseData().get("id");
+                    new EnterPasswordForm(null, null, userId).show();
                 }
             });
             GoogleConnect.getInstance().doLogin();

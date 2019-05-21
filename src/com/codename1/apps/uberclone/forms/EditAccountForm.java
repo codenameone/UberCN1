@@ -26,7 +26,7 @@ package com.codename1.apps.uberclone.forms;
 import com.codename1.apps.uberclone.dataobj.User;
 import com.codename1.apps.uberclone.server.UserService;
 import com.codename1.capture.Capture;
-import com.codename1.components.FloatingActionButton;
+import com.codename1.properties.PropertyBase;
 import com.codename1.properties.UiBinding;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Button;
@@ -42,7 +42,6 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.RoundBorder;
 import com.codename1.ui.plaf.Style;
-import com.codename1.ui.util.Resources;
 
 /**
  * Settings form UI
@@ -54,30 +53,8 @@ public class EditAccountForm extends Form {
         super(BoxLayout.y());
         CommonCode.initBlackTitleForm(this, "Edit Account", null);
         
-        Button avatar = new Button("", "Label");
-        avatar.setIcon(CommonCode.getAvatar(i -> avatar.setIcon(i)));
-        avatar.addActionListener(e -> {
-            String file = Capture.capturePhoto(512, -1);
-            if(file != null) {
-                avatar.setIcon(CommonCode.setAvatar(file));
-                UserService.setAvatar(file);
-            }
-        });
-
-        Label edit = new Label("", "Container");
-        Style s = edit.getUnselectedStyle();
-        s.setMarginUnit(Style.UNIT_TYPE_DIPS);
-        s.setPaddingUnit(Style.UNIT_TYPE_DIPS);
-        s.setMargin(3, 3, 3, 3);
-        s.setPadding(1, 1, 1, 1);
-        s.setFgColor(0xffffff);
-        s.setBgTransparency(0);
-        FontImage.setMaterialIcon(edit, FontImage.MATERIAL_EDIT, 2f);
-        s.setBorder(RoundBorder.create().
-                color(0).
-                opacity(255).
-                rectangle(false).
-                shadowOpacity(0));
+        Button avatar = createAvatarButton();
+        Label edit = createEditLabel();
                 
         Container avatarContainer = LayeredLayout.encloseIn(avatar, 
                 FlowLayout.encloseBottom(edit));
@@ -87,17 +64,9 @@ public class EditAccountForm extends Form {
 
         String userString = user.getPropertyIndex().toString();
         
-        TextField firstName = new TextField("", "", 80, TextField.ANY);
-        uib.bind(user.givenName, firstName);
-        firstName.setUIID("Label");
-        
-        TextField surname = new TextField("", "", 80, TextField.ANY);
-        uib.bind(user.surname, surname);
-        surname.setUIID("Label");
-        
-        TextField email = new TextField("", "", 80, TextField.EMAILADDR);
-        uib.bind(user.email, email);
-        email.setUIID("Label");
+        TextField firstName = createTextField(uib, user.givenName, TextField.ANY);
+        TextField surname = createTextField(uib, user.surname, TextField.ANY);
+        TextField email = createTextField(uib, user.email, TextField.EMAILADDR);
                 
         addAll(avatarContainer,
                 CommonCode.createSeparator(),
@@ -123,9 +92,47 @@ public class EditAccountForm extends Form {
         });
     }
 
+    private TextField createTextField(UiBinding uib, PropertyBase p, int constraint) {
+        TextField t = new TextField("", "", 80, constraint);
+        uib.bind(p, t);
+        t.setUIID("Label");
+        return t;
+    }
+    
+    private Button createAvatarButton() {
+        Button avatar = new Button("", "Label");
+        avatar.setIcon(CommonCode.getAvatar(i -> avatar.setIcon(i)));
+        avatar.addActionListener(e -> {
+            String file = Capture.capturePhoto(512, -1);
+            if(file != null) {
+                avatar.setIcon(CommonCode.setAvatar(file));
+                UserService.setAvatar(file);
+            }
+        });
+        return avatar;
+    }
+    
     @Override
     protected void initGlobalToolbar() {
         super.initGlobalToolbar();
         getToolbar().setUIID("BlackToolbar");
+    }
+
+    private Label createEditLabel() {
+        Label edit = new Label("", "Container");
+        Style s = edit.getUnselectedStyle();
+        s.setMarginUnit(Style.UNIT_TYPE_DIPS);
+        s.setPaddingUnit(Style.UNIT_TYPE_DIPS);
+        s.setMargin(3, 3, 3, 3);
+        s.setPadding(1, 1, 1, 1);
+        s.setFgColor(0xffffff);
+        s.setBgTransparency(0);
+        FontImage.setMaterialIcon(edit, FontImage.MATERIAL_EDIT, 2f);
+        s.setBorder(RoundBorder.create().
+                color(0).
+                opacity(255).
+                rectangle(false).
+                shadowOpacity(0));    
+        return edit;
     }
 }
